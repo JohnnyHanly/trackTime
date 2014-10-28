@@ -37,9 +37,9 @@ public:
 }
 
 void insertName(string nameInput)
-	{
+{
 		this->name = nameInput; // sets the object name to the string name passed.
-	}
+}
 void insertCircuit(string circuitInput)
 {
 	this->circuitName = circuitInput;
