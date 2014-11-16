@@ -8,31 +8,72 @@
 toDo
 
 verify date input data
+get rid of racer.cpp, its redundant and isn't compatible with templates
+can you delete the file? The function defs will go in the header file. -steven
 */ 
 
 using namespace std;
-
+struct raceProfile
+{
+	string name;
+	string driverID; 
+	string circuitName;
+	struct tm date;
+};
 // this is a rough draft for object data for the racer
 
 class racer
 {
 private:
-	string name; // full name "first last" 
-	string driverId; // string numbers and letters "D123456789"
-	string circuitName;
-	struct tm date; // creates a structure for time using time.h
-	struct lapTime
+	//singly linked list that serves as hash table.
+	//each node has a pointer to a second linked list
+	//with overflow pointing at the head. 
+	struct node
 	{
-		int counter; // to give the total number of laps. start with lap 1 -> lap n. 
-		struct tm lap; // creates time struct for the indipendant laptime
-		lapTime * previous;
-		lapTime * next;
+		node* next;
+		node* overflow;
 	};
+	int hashCount, objCount, empty;
+	node* head;
 public:
-	void insertName(string nameInput);
-	void insertCircuit(string circuitInput);
-	void insertId(string inputId);
-	void inserDate(tm input);
-	void insertLap(tm lapInput);
-	void deleteLap(int lapNumber);
+	racer();
+	~racer();
+	void buildHashTable( int MAX_SIZE );
 };
+
+void racer::buildHashTable( int MAX_SIZE )
+{
+	node* newNode;
+	node* cur = head;
+	empty = MAX_SIZE;
+	for(int i = 0;i < MAX_TABLE; i++)
+	{
+		newNode = new node;
+		cur->next = newNode;
+		cur = newNode;
+		cur->taken = false;
+		cur->next = NULL;
+		
+		//sentinel for overflow in each node
+		cur->overflow = new node;
+		cur->overflow->next = NULL;
+		++count;
+	}
+}
+
+
+//c_tor
+racer::racer()
+{
+	//first entry is a sentinel node
+	head = new node;
+	head->next = NULL;
+	head->prev = NULL;
+	head->overflow = NULL;
+	objCount = 0;
+}
+
+racer::~racer()
+{
+	//d_tor
+}
