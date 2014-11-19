@@ -60,6 +60,7 @@ void racer::buildHashTable( int MAX_SIZE )
 		++count;
 	}
 }
+//comment
 
 
 //c_tor
