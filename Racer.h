@@ -2,6 +2,10 @@
 // ADT BST and ADT Hashed Dictionary.
 // Now we just need to work on a main :)
 
+// Let us assume that in the input file,
+// the data will be in this order
+// name, idnumber, circuitname, date, finishtime (one line each)
+
 #ifndef RACER
 #define RACER
 
