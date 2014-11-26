@@ -16,32 +16,32 @@ using namespace std;
 class Racer
 {
 private:
-  string name;
-  string idNum;
-  string circuitName;
-  string date;
-  int finishTime;
+  string* name;
+  string* idNum;
+  string* circuitName;
+  string* date;
+  double* finishTime;
   
   
 public:
-  Racer() { name = " "; idNum = " "; circuitName = " ";
-    date = " "; finishTime = 0; }
-  Racer(string newName) { name = newName; idNum = " "; circuitName = " ";
-    date = " "; finishTime = 0; }
-  Racer(string newName, string newId) { name = newName; idNum = newId; 
-    circuitName = " "; date = " "; finishTime = 0; }
+  Racer() { name = nullptr; idNum = nullptr; circuitName = nullptr;
+    date = nullptr; finishTime = nullptr; }
+  Racer(string newName) { name = &newName; idNum = nullptr; circuitName = nullptr;
+    date = nullptr; finishTime = nullptr; }
+  Racer(string newName, string newId) { name = &newName; idNum = &newId; 
+    circuitName = nullptr; date = nullptr; finishTime = nullptr; }
   
-  int getFinishTime() const{ return finishTime; }
-  string getName() const{ return name; }
-  string getIdNum() const { return idNum; }
-  string getCircuitName() const { return circuitName; }
-  string getDate() const { return date;}
+  double getFinishTime() const{ return *finishTime; }
+  string getName() const{ return *name; }
+  string getIdNum() const { return *idNum; }
+  string getCircuitName() const { return *circuitName; }
+  string getDate() const { return *date;}
   
-  void setFinishTime(int newTime) { finishTime = newTime; }
-  void setName(string nm) { name = nm; }
-  void setIdNum(string newId) { idNum = newId; }
-  void setCircuitName(string newCircuit) { circuitName = newCircuit; }
-  void setDate(string newDate) { date = newDate; }
+  void setFinishTime(double newTime) { finishTime = &newTime; }
+  void setName(string nm) { name = &nm; }
+  void setIdNum(string newId) { idNum = &newId; }
+  void setCircuitName(string newCircuit) { circuitName = &newCircuit; }
+  void setDate(string newDate) { date = &newDate; }
   
   bool operator > (const Racer &right)
   {
