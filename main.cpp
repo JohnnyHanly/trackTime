@@ -9,6 +9,8 @@
 
 using namespace std;
 
+const int MAX_ENTRIES = 200;
+
 bool readFile(string *&stringPtr, string &inputFileName, int &numElem);
 bool createHash(HashedDictionary<string, Racer>* dict, string* stringArr, int numElem);
 
@@ -53,7 +55,7 @@ bool createHash(HashedDictionary<string, Racer>* dict, string* stringArr, int nu
 // elements saved to the string array is saved to the int reference
 // parameter. The function returns true if the file is read and false
 // if the file fails to open or the string array is empty.
-bool readFile(string *&stringPtr, string &inputFileName, int &numElem)
+bool readFileHash(string *&stringPtr, string &inputFileName, int &numElem)
 {
 	ifstream inFile;
 	string readString;
@@ -72,7 +74,33 @@ bool readFile(string *&stringPtr, string &inputFileName, int &numElem)
 	while(getline(inFile, readString) && i < MAX_ENTRIES)
 	{
 		stringArr[i] = readString;
+		Racer *newRacer = new Racer(stringArr[i]);
 		++i;
+		if(getline(inFile, readString) && i < MAX_ENTRIES)
+		{
+			stringArr[i] = readString;
+			newRacer->setIdNum(stringArr[i]);
+			++i;
+		}
+		if(getline(inFile, readString) && i < MAX_ENTRIES)
+		{
+			stringArr[i] = readString;
+			newRacer->setCircuitName(stringArr[i]);
+			++i;
+		}
+		if(getline(inFile, readString) && i < MAX_ENTRIES)
+		{
+			stringArr[i] = readString;
+			newRacer->setDate(stringArr[i]);
+			++i;
+		}
+		if(getline(inFile, readString) && i < MAX_ENTRIES)
+		{
+			stringArr[i] = readString;
+			newRacer->setFinishTime(stringArr[i]);
+			++i;
+		}
+
 	}
 
 	if(stringArr[0].empty())
