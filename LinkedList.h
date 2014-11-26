@@ -13,17 +13,17 @@ template <class KeyType, class T>
 class ListNode
 {
 private:
-	KeyType searchKey;
-    T value;           // Node value
+    KeyType* searchKey;
+    T* value;           // Node value
     ListNode<KeyType, T> *next; // Pointer to the next node
 public:
     // Constructor
-    ListNode (T nodeValue){ value = nodeValue; next = nullptr;}
-	ListNode (KeyType newKey, T nodeValue) { searchKey = newKey; value = nodeValue; next = nullptr;}
+    ListNode (T nodeValue){ value = &nodeValue; next = nullptr;}
+	ListNode (KeyType newKey, T nodeValue) { searchKey = &newKey; value = &nodeValue; next = nullptr;}
 	void setNext(ListNode<KeyType, T>* nextPtr) { next = nextPtr;}
 	ListNode<KeyType, T>* getNext() const { return next;}
-	T getValue() const {return value;}
-	KeyType getSearchKey() const {return searchKey;}
+	T getValue() const {return *value;}
+	KeyType getSearchKey() const {return *searchKey;}
 };
 
 //*********************************************
