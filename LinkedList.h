@@ -154,7 +154,7 @@ void LinkedList<KeyType, T>::displayList(void visit(T &)) const
     {
         visit(nodePtr->getValue());  // Display the value in this node.
         nodePtr = nodePtr->getNext();         // Move to the next node.
-   }
+    }
 }
 
 //**************************************************

@@ -11,10 +11,12 @@ using namespace std;
 
 const int MAX_ENTRIES = 200;
 
-bool readFile(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
+bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
 			  string &inputFileName, int &numElem);
 void display(Racer &rc);
-
+void displayMenu();
+void switchMenu(HashedDictionary<string, Racer>* dict, string inputStr);
+void displayStats(HashedDictionary<string, Racer>* dict);
 
 int main()
 {
@@ -26,9 +28,19 @@ int main()
 	bool boolVar = false;
 	int tempCount = 0;
 
-	if(readFile(racerDictionary, stringArr, inputFile, numElem))
-	  racerDictionary->traverse(display);
-
+	if(readFileHash(racerDictionary, stringArr, inputFile, numElem))
+	{
+		racerDictionary->traverse(display);
+		while(getline(cin, inputStr))
+		{
+			if(inputStr.empty())
+				cout << "Invalid input, Please enter valid input or press M to show help menu.\n\n";
+			else if(inputStr.at(0) != 'Q')
+				switchMenu(racerDictionary, inputStr);
+			else
+				break;
+		}
+	}
   return 0;
 }
 
@@ -73,30 +85,30 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 	while(getline(inFile, readString) && i < MAX_ENTRIES)
 	{
 		stringArr[i] = readString;
-		Racer *newRacer = new Racer(stringArr[i]);
+		Racer *newRacer = new Racer(&stringArr[i]);
 		++i;
 		if(getline(inFile, readString) && i < MAX_ENTRIES)
 		{
 			stringArr[i] = readString;
-			newRacer->setIdNum(stringArr[i]);
+			newRacer->setIdNum(&stringArr[i]);
 			++i;
 		}
 		if(getline(inFile, readString) && i < MAX_ENTRIES)
 		{
 			stringArr[i] = readString;
-			newRacer->setCircuitName(stringArr[i]);
+			newRacer->setCircuitName(&stringArr[i]);
 			++i;
 		}
 		if(getline(inFile, readString) && i < MAX_ENTRIES)
 		{
 			stringArr[i] = readString;
-			newRacer->setDate(stringArr[i]);
+			newRacer->setDate(&stringArr[i]);
 			++i;
 		}
 		if(getline(inFile, readString) && i < MAX_ENTRIES)
 		{
 			stringArr[i] = readString;
-			newRacer->setFinishTime(stringArr[i]);
+			newRacer->setFinishTime(&stringArr[i]);
 			++i;
 		}
 		dict->add(newRacer->getIdNum(), *newRacer);
@@ -111,4 +123,59 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 	stringPtr = stringArr;
 	numElem = i;
 	return notEmpty;
+}
+
+
+void switchMenu(HashedDictionary<string, Racer>* dict, string inputStr)
+{
+	switch(inputStr.at(0))
+	{
+	case 'A' : 
+		break;
+	case 'D' : dict->traverse(display);
+		break;
+	case 'P' : 
+		{
+		int index = 0;
+		//dict->specialTraverse(specialDisplay, indexDisplay, index);
+		break;
+		}
+	case 'T' : displayStats(dict);
+		break;
+	case 'M' : displayMenu();
+		break;
+	default : cout << "Invalid choice, enter a valid choice or enter 'M' for help menu.\n\n";
+	}
+}
+
+// the displayMenu function displays the options for the switchMenu function
+// which drives the program. Accepts no parameters and returns nothing.
+void displayMenu()
+{
+	cout << "Enter a value as shown below to view data from list of Racers.\n\n";
+	cout << "S        : Search the list by racer Name(Case Sensitive).\n";
+	cout << "D        : Display the Hashed Table of Racers.\n";
+	cout << "P        : Display the Hashed Table in indented form.\n";
+	cout << "T        : Show Statistics.\n";
+	cout << "M        : Display this Menu.\n";
+	cout << "Q        : Quit.\n\n";
+}
+
+
+void displayStats(HashedDictionary<string, Racer>* dict)
+{
+	int numCollisions = dict->getNumCollisions();
+	int numLists = dict->getNumLinkedLists();
+	int hashedArraySize = dict->getTableSize();
+	int numItems = dict->getNumberOfItems();
+	int emptyCount = dict->getNumEmptyElements();
+	int numItemsInLongest = 0;
+	int longestIndex = dict->getLongestIndex(numItemsInLongest);
+
+	cout << "There were " << numCollisions << " collisions making the hash table.\n";
+	cout << "There are " << numLists << " Linked Lists in the hash table.\n";
+	cout << "The Load Factor was " << hashedArraySize-emptyCount << "/" << hashedArraySize << endl;
+	cout << "The average number of nodes per Linked List is " << static_cast<float>(numCollisions)/numLists << endl;
+	cout << "The longest Linked List is at Index " << longestIndex
+		<< " with " << (numItemsInLongest-1) << " nodes in the list." << endl;
 }

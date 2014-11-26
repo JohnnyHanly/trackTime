@@ -26,22 +26,22 @@ private:
 public:
   Racer() { name = nullptr; idNum = nullptr; circuitName = nullptr;
     date = nullptr; finishTime = nullptr; }
-  Racer(string newName) { name = &newName; idNum = nullptr; circuitName = nullptr;
+  Racer(string *newName) { name = newName; idNum = nullptr; circuitName = nullptr;
     date = nullptr; finishTime = nullptr; }
   Racer(string newName, string newId) { name = &newName; idNum = &newId; 
     circuitName = nullptr; date = nullptr; finishTime = nullptr; }
   
-  double getFinishTime() const{ return *finishTime; }
+  string getFinishTime() const{ return *finishTime; }
   string getName() const{ return *name; }
   string getIdNum() const { return *idNum; }
   string getCircuitName() const { return *circuitName; }
   string getDate() const { return *date;}
   
-  void setFinishTime(string newTime) { finishTime = &newTime; }
-  void setName(string nm) { name = &nm; }
-  void setIdNum(string newId) { idNum = &newId; }
-  void setCircuitName(string newCircuit) { circuitName = &newCircuit; }
-  void setDate(string newDate) { date = &newDate; }
+  void setFinishTime(string *newTime) { finishTime = newTime; }
+  void setName(string *nm) { name = nm; }
+  void setIdNum(string *newId) { idNum = newId; }
+  void setCircuitName(string *newCircuit) { circuitName = newCircuit; }
+  void setDate(string *newDate) { date = newDate; }
   
   bool operator > (const Racer &right)
   {

@@ -32,7 +32,7 @@ public:
 	void clear();
 	ListNode<KeyType, ItemType>* getItem(const KeyType& searchKey) const;
 	bool contains(const KeyType& searchKey) const;
-	void traverse(void visit(ItemType&)) const;
+	void traverse(void visit(ItemType &)) const;
 	void specialTraverse(void visit(ItemType &), void specialVisit(ItemType &, int &), int &index) const;
 
 };
