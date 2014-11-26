@@ -2,186 +2,94 @@ Steve McQueen
 D0000001
 Tsukuba Circuit
 01/04/2014
-60.21
-60.31
-60.25
-60.19
-60.49
+301.45
 Akira Nakai
 D0000002
 Tsukuba Circuit
 01/04/2014
-59.20
-59.45
-60.35
-59.67
-59.12
+297.79
 Ayrton Senna
 A0000001
 Tsukuba Circuit
 01/04/2014
-55.23
-55.45
-54.90
-54.87
-54.76
+275.21
 Alan Prost
 K0098983
 Tsukuba Circuit
 01/04/2014
-56.67
-56.68
-56.62
-56.30
-56.44
-55.99
+338.70
 Niki Lauda
 Y0989564
 Tsukuba Circuit
 01/04/2014
-55.89
-55.98
-55.65
-55.34
-55.45
-55.64
+333.95
 Jody Scheckter
 U8796953
 Tsukuba Circuit
 01/04/2014
-57.32
-57.89
-57.98
-57.54
-57.23
-56.89
+344.85
 Mario Andretti
 I2039431
 Tsukuba Circuit
 01/04/2014
-78.56
-89.65
-79.89
-90.87
-76.78
-87.90
+503.65
 Keith Andrews
 E4343434
 Tsukuba Circuit
 01/04/2014
-70.09
-69.95
-71.54
-72.65
-73.45
-71.80
+429.48
 Frank Armi
 F3242345
 Tsukuba Circuit
 01/04/2014
-54.34
-65.44
-66.55
-64.34
-65.35
-66.00
+382.02
 Giorgio Bassi
 L9867564
 Tsukuba Circuit
 01/04/2014
-87.76
-87.89
-87.60
-87.65
-87.54
-87.12
+525.56
 Paul Belmondo
 O8763456
 Tsukuba Circuit
 01/04/2014
-98.78
-98.77
-98.56
-98.23
-98.34
-97.89
+590.57
 Alan Brown
 P9345456
 Tsukuba Circuit
 01/04/2014
-100.23
-100.54
-90.34
-96.54
-98.60
-98.65
+584.9
 Warwick Brown
 M7434567
 Tsukuba Circuit
 01/04/2014
-76.65
-76.45
-76.89
-76.34
-76.43
-76.90
+459.66
 Tommy Byrne
 Y7564890
 Tsukuba Circuit
 01/04/2014
-89.45
-89.54
-89.65
-89.23
-89.65
-89.89
+573.41
 Ivan Capelli
 W2343456
 Tsukuba Circuit
 01/04/2014
-78.89
-79.98
-79.60
-79.45
-78.65
-78.45
+475.02
 Dave Charlton
 Q1232456
 Tsukuba Circuit
 01/04/2014
-67.78
-76.65
-68.67
-69.76
-67.78
-67.89
+418.53
 Bernard de Dryver
 G4565678
 Tsukuba Circuit
 01/04/2014
-90.78
-89.87
-89.67
-89.76
-89.90
-90.76
+540.74
 Paddy Driver
 P7384869
 Tsukuba Circuit
 01/04/2014
-78.98
-78.89
-78.96
-78.69
-78.89
-78.43
+472.84
 Don Edmunds
 G4345679
 Tsukuba Circuit
 01/04/2014
-87.87
-87.89
-87.99
-87.65
-87.54
-86.98
+525.92

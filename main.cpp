@@ -11,14 +11,14 @@ using namespace std;
 
 const int MAX_ENTRIES = 200;
 
-bool readFile(string *&stringPtr, string &inputFileName, int &numElem);
-bool createHash(HashedDictionary<string, Racer>* dict, string* stringArr, int numElem);
-
+bool readFile(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
+			  string &inputFileName, int &numElem);
+void display(Racer &rc);
 
 
 int main()
 {
-  HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>();
+    HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>();
 	string inputFile;
 	string inputStr;
 	string *stringArr = nullptr;
@@ -26,23 +26,21 @@ int main()
 	bool boolVar = false;
 	int tempCount = 0;
 
-	if(readFile(stringArr, inputFile, numElem))
-	  boolVar = createHash
+	if(readFile(racerDictionary, stringArr, inputFile, numElem))
+	  racerDictionary->traverse(display);
 
   return 0;
 }
 
 
-bool createHash(HashedDictionary<string, Racer>* dict, string* stringArr, int numElem)
+
+void display(Racer &rc)
 {
-  bool created = false;
-  bool inserted = false;
-  int i = 0;
-  int stringIterator = 0;
-  int newDate;
-  string newName;
-  
-  
+	cout << rc.getName() << endl;
+	cout << rc.getIdNum() << endl;
+	cout << rc.getCircuitName() << endl;
+	cout << rc.getDate() << endl;
+	cout << rc.getFinishTime() << endl << endl;
 }
 
 
@@ -55,7 +53,8 @@ bool createHash(HashedDictionary<string, Racer>* dict, string* stringArr, int nu
 // elements saved to the string array is saved to the int reference
 // parameter. The function returns true if the file is read and false
 // if the file fails to open or the string array is empty.
-bool readFileHash(string *&stringPtr, string &inputFileName, int &numElem)
+bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
+				  string &inputFileName, int &numElem)
 {
 	ifstream inFile;
 	string readString;
@@ -63,14 +62,14 @@ bool readFileHash(string *&stringPtr, string &inputFileName, int &numElem)
 	string *stringArr = new string[MAX_ENTRIES]();
 	int i = 0;
 
-	inFile.open("racer.txt");
+	inFile.open("inputRacer.txt");
 	if(!inFile)
 	{
 		cout << "Error opening racer.txt Closing...\n";
 		return notEmpty;
 	}
 	else
-		inputFileName = "racer.txt";
+		inputFileName = "inputRacer.txt";
 	while(getline(inFile, readString) && i < MAX_ENTRIES)
 	{
 		stringArr[i] = readString;
@@ -100,7 +99,7 @@ bool readFileHash(string *&stringPtr, string &inputFileName, int &numElem)
 			newRacer->setFinishTime(stringArr[i]);
 			++i;
 		}
-
+		dict->add(newRacer->getIdNum(), *newRacer);
 	}
 
 	if(stringArr[0].empty())
