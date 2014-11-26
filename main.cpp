@@ -42,9 +42,6 @@ bool createHash(HashedDictionary<string, Racer>* dict, string* stringArr, int nu
   
   
 }
-// too tired... will fk w/ it tomorrow, the wording for this assignment 
-// says we have to save to dynamic memory and then assign value to the hash...
-// will have to ask specifics.
 
 
 // The readFile function has three reference parameters.
