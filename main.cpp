@@ -21,26 +21,28 @@ void displayStats(HashedDictionary<string, Racer>* dict);
 int main()
 {
     HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>();
+	
 	string inputFile;
-	string inputStr;
+	string inputStr = " ";
 	string *stringArr = nullptr;
 	int numElem = 0;
 	bool boolVar = false;
 	int tempCount = 0;
-
+	
 	if(readFileHash(racerDictionary, stringArr, inputFile, numElem))
 	{
-		racerDictionary->traverse(display);
-		while(getline(cin, inputStr))
+		//racerDictionary->traverse(display);
+		while(inputStr[0] != 'Q')
 		{
-			if(inputStr.empty())
-				cout << "Invalid input, Please enter valid input or press M to show help menu.\n\n";
-			else if(inputStr.at(0) != 'Q')
-				switchMenu(racerDictionary, inputStr);
-			else
+			cout << "[CIS22C@racer]$ ";
+			getline(cin, inputStr);
+			if (inputStr[0] == 'Q')
 				break;
+			switchMenu(racerDictionary, inputStr);
 		}
 	}
+	
+	
   return 0;
 }
 
@@ -128,7 +130,7 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 
 void switchMenu(HashedDictionary<string, Racer>* dict, string inputStr)
 {
-	switch(inputStr.at(0))
+	switch(inputStr[0])
 	{
 	case 'A' : 
 		break;
@@ -144,7 +146,10 @@ void switchMenu(HashedDictionary<string, Racer>* dict, string inputStr)
 		break;
 	case 'M' : displayMenu();
 		break;
-	default : cout << "Invalid choice, enter a valid choice or enter 'M' for help menu.\n\n";
+	case 'S': cout << "You are Searching for something...\n";
+		break;
+	default:
+		cout << "Usage: Enter M for available commands\n\n";
 	}
 }
 
@@ -152,13 +157,13 @@ void switchMenu(HashedDictionary<string, Racer>* dict, string inputStr)
 // which drives the program. Accepts no parameters and returns nothing.
 void displayMenu()
 {
-	cout << "Enter a value as shown below to view data from list of Racers.\n\n";
-	cout << "S        : Search the list by racer Name(Case Sensitive).\n";
-	cout << "D        : Display the Hashed Table of Racers.\n";
-	cout << "P        : Display the Hashed Table in indented form.\n";
-	cout << "T        : Show Statistics.\n";
-	cout << "M        : Display this Menu.\n";
-	cout << "Q        : Quit.\n\n";
+	cout << "-----HELP MENU-----\n" <<
+		"S SEARCH USING RACER NAME (case sensitive)\n"
+		"D DISPLAY HASHED TABLE OF RACERS\n"
+		"P DISPLAY HASHED TABLE IN INDENTED FORM\n"
+		"T SHOW HASH TABLE STATISTICS\n"
+		"M SHOW THIS MENU (BUT YOU ALREADY KNOW THAT)\n"
+		"Q EXIT PROGRAM (GOODBYE)\n";
 }
 
 
@@ -172,10 +177,41 @@ void displayStats(HashedDictionary<string, Racer>* dict)
 	int numItemsInLongest = 0;
 	int longestIndex = dict->getLongestIndex(numItemsInLongest);
 
+	/*
 	cout << "There were " << numCollisions << " collisions making the hash table.\n";
 	cout << "There are " << numLists << " Linked Lists in the hash table.\n";
 	cout << "The Load Factor was " << hashedArraySize-emptyCount << "/" << hashedArraySize << endl;
 	cout << "The average number of nodes per Linked List is " << static_cast<float>(numCollisions)/numLists << endl;
 	cout << "The longest Linked List is at Index " << longestIndex
 		<< " with " << (numItemsInLongest-1) << " nodes in the list." << endl;
+*/
+
+	cout << "\n---------HASH TABLE STATISTICS---------\n\n";
+	
+	//smaller the barsize, the longer the graph. lol
+	int barSize = 4;
+	cout << "  HASH TABLE LOAD FACTOR       : ";
+	float load = float(hashedArraySize - emptyCount) / float(hashedArraySize) * 100;
+	cout << "[";
+	float progress = load / barSize;
+	float max = hashedArraySize / barSize;
+	for (int i = 0; i < progress; i++)
+	{
+		cout << '#';
+	}
+	for (int i = 1; i < max; i++)
+	{
+		cout << '-' << '-';
+	}
+	cout << "] " << load << '%' << endl;
+	
+	cout << "  EMPTY SPACES                 : " << emptyCount << "\n";
+	cout << "  HASH TABLE SIZE              : " << hashedArraySize << "\n";
+	cout << "  TOTAL NUMBER OF ITEMS        : " << numItems << "\n";
+	cout << "  NUMBER OF COLLISIONS         : " << numCollisions << "\n";
+	cout << "  NUMBER OF LINKED LISTS       : " << numLists << "\n";
+	cout << "  LARGEST LINKED LIST          : " << numItemsInLongest - 1 << "\n";
+	cout << "  INDEX OF LARGEST LINKED LIST : " << longestIndex << "\n";
+	cout << "  AVERAGE LINKED LISTS         : " << float(numItems) / float(hashedArraySize - emptyCount) << "\n\n";
+	
 }

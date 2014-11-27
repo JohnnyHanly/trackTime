@@ -194,12 +194,32 @@ bool HashedDictionary<KeyType, ItemType>::contains(const KeyType& searchKey) con
 template <class KeyType, class ItemType>
 void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&)) const
 {
+	//my display function from hw5. it works fine for me
+	//ht_head->next points to the first element in the hash table
+	//node* cur = ht_head->next;
+	//while (cur)
+	//{
+	//	if (cur->taken)
+	//	{
+	//		printMovie(cur->data);
+	//		if (cur->overflow->next)
+	//		{
+	//			node* pWalk = cur->overflow->next;
+	//			while (pWalk)
+	//			{
+	//				printMovie(pWalk->data);
+	//				pWalk = pWalk->next;
+	//			}
+	//		}
+	//	}
+	//	cur = cur->next;
+	//}
 	int i = 0;
 	LinkedList<KeyType, ItemType>* nodePtr;
 	while(i < hashTableSize)
 	{
 		nodePtr = hashTable[i].getList();
-		nodePtr->displayList(visit);
+		//nodePtr->displayList(visit);
 		++i;
 	}
 }
