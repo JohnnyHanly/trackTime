@@ -196,6 +196,8 @@ void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&)) const
 {
 	//my display function from hw5. it works fine for me
 	//ht_head->next points to the first element in the hash table
+	//oh and i had a sentinel for my collision thats why I start
+	//at cur->overflow->next;
 	//node* cur = ht_head->next;
 	//while (cur)
 	//{
@@ -214,14 +216,16 @@ void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&)) const
 	//	}
 	//	cur = cur->next;
 	//}
-	int i = 0;
+	//int i = 0;
 	LinkedList<KeyType, ItemType>* nodePtr;
-	while(i < hashTableSize)
-	{
-		nodePtr = hashTable[i].getList();
-		//nodePtr->displayList(visit);
-		++i;
-	}
+	//while(i < hashTableSize)
+	//{
+	//	nodePtr = hashTable[i].getList();
+	//	//nodePtr->displayList(visit);
+	//	++i;
+	//}
+	nodePtr = hashTable[0].getList();
+	nodePtr->displayList(visit);
 }
 
 template <class KeyType, class ItemType>
