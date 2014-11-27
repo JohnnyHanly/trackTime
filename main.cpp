@@ -13,15 +13,18 @@ const int MAX_ENTRIES = 200;
 
 bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
 			  string &inputFileName, int &numElem);
+bool createTree(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
 void display(Racer &rc);
+void printLabels();
+void addToTree(Racer &rc, BinarySearchTree<Racer> *&tree);
 void displayMenu();
-void switchMenu(HashedDictionary<string, Racer>* dict, string inputStr);
+void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr);
 void displayStats(HashedDictionary<string, Racer>* dict);
 
 int main()
 {
     HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>();
-	
+	BinarySearchTree<Racer>* racerTree = new BinarySearchTree<Racer>();
 	string inputFile;
 	string inputStr = " ";
 	string *stringArr = nullptr;
@@ -31,14 +34,14 @@ int main()
 	
 	if(readFileHash(racerDictionary, stringArr, inputFile, numElem))
 	{
-		//racerDictionary->traverse(display);
+		racerDictionary->traverse(addToTree, racerTree);
 		while(inputStr[0] != 'Q')
 		{
 			cout << "[CIS22C@racer]$ ";
 			getline(cin, inputStr);
 			if (inputStr[0] == 'Q')
 				break;
-			switchMenu(racerDictionary, inputStr);
+			switchMenu(racerDictionary, racerTree, inputStr);
 		}
 	}
 	
@@ -50,13 +53,28 @@ int main()
 
 void display(Racer &rc)
 {
-	cout << rc.getName() << endl;
-	cout << rc.getIdNum() << endl;
-	cout << rc.getCircuitName() << endl;
-	cout << rc.getDate() << endl;
-	cout << rc.getFinishTime() << endl << endl;
+	cout << setw(20);
+	cout << left << *(rc.getName());
+	cout << setw(10) << *(rc.getIdNum());
+	cout << setw(20) << *(rc.getCircuitName());
+	cout << setw(12) << *(rc.getDate());
+	cout << setw(10) << *(rc.getFinishTime()) << endl;
 }
 
+void printLabels()
+{
+	cout << setw(20);
+	cout << left << "NAME";
+	cout << setw(10) << "ID NUMBER";
+	cout << setw(20) << "CIRCUIT NAME";
+	cout << setw(12) << "DATE";
+	cout << setw(10) << "FINISH TIME" << endl;
+}
+
+void addToTree(Racer &rc, BinarySearchTree<Racer> *&tree)
+{
+	tree->insert(rc);
+}
 
 // The readFile function has three reference parameters.
 // The function saves the filename of the file it opens to the
@@ -113,7 +131,7 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 			newRacer->setFinishTime(&stringArr[i]);
 			++i;
 		}
-		dict->add(newRacer->getIdNum(), *newRacer);
+		dict->add(*(newRacer->getIdNum()), *newRacer);
 	}
 
 	if(stringArr[0].empty())
@@ -128,20 +146,17 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 }
 
 
-void switchMenu(HashedDictionary<string, Racer>* dict, string inputStr)
+void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr)
 {
 	switch(inputStr[0])
 	{
 	case 'A' : 
 		break;
-	case 'D' : dict->traverse(display);
+	case 'D' : printLabels();
+		dict->traverse(display);
 		break;
-	case 'P' : 
-		{
-		int index = 0;
-		//dict->specialTraverse(specialDisplay, indexDisplay, index);
+	case 'P' : tree->inOrder(display);
 		break;
-		}
 	case 'T' : displayStats(dict);
 		break;
 	case 'M' : displayMenu();
@@ -160,7 +175,7 @@ void displayMenu()
 	cout << "-----HELP MENU-----\n" <<
 		"S SEARCH USING RACER NAME (case sensitive)\n"
 		"D DISPLAY HASHED TABLE OF RACERS\n"
-		"P DISPLAY HASHED TABLE IN INDENTED FORM\n"
+		"P DISPLAY DRIVERS IN ALPHABETICAL ORDER(FIRST NAME)\n"
 		"T SHOW HASH TABLE STATISTICS\n"
 		"M SHOW THIS MENU (BUT YOU ALREADY KNOW THAT)\n"
 		"Q EXIT PROGRAM (GOODBYE)\n";

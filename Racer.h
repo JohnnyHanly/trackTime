@@ -31,11 +31,11 @@ public:
   Racer(string newName, string newId) { name = &newName; idNum = &newId; 
     circuitName = nullptr; date = nullptr; finishTime = nullptr; }
   
-  string getFinishTime() const{ return *finishTime; }
-  string getName() const{ return *name; }
-  string getIdNum() const { return *idNum; }
-  string getCircuitName() const { return *circuitName; }
-  string getDate() const { return *date;}
+  string* getFinishTime() const{ return finishTime; }
+  string* getName() const{ return name; }
+  string* getIdNum() const { return idNum; }
+  string* getCircuitName() const { return circuitName; }
+  string* getDate() const { return date;}
   
   void setFinishTime(string *newTime) { finishTime = newTime; }
   void setName(string *nm) { name = nm; }
@@ -46,24 +46,24 @@ public:
   bool operator > (const Racer &right)
   {
     bool status = false;
-    if(*name > right.getName())
+    if(*name > *(right.getName()))
       status = true;
     return status;
   }
   bool operator < (const Racer &right)
   {
     bool status = false;
-    if(*name < right.getName())
+    if(*name < *(right.getName()))
       status = true;
     return status;
   }
   const Racer operator=(const Racer &right)
   {
-    name = &right.getName();
-    idNum = &right.getIdNum();
-    circuitName = &right.getCircuitName();
-    date = &right.getDate();
-    finishTime = &right.getFinishTime();
+    name = right.getName();
+    idNum = right.getIdNum();
+    circuitName = right.getCircuitName();
+    date = right.getDate();
+    finishTime = right.getFinishTime();
     return *this;
   }
 };

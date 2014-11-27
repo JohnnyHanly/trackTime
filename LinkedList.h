@@ -13,17 +13,17 @@ template <class KeyType, class T>
 class ListNode
 {
 private:
-    KeyType* searchKey;
-    T* value;           // Node value
+    KeyType searchKey;
+    T value;           // Node value
     ListNode<KeyType, T> *next; // Pointer to the next node
 public:
     // Constructor
-    ListNode (T nodeValue){ value = &nodeValue; next = nullptr;}
-	ListNode (KeyType newKey, T nodeValue) { searchKey = &newKey; value = &nodeValue; next = nullptr;}
+    ListNode (T nodeValue){ value = nodeValue; next = nullptr;}
+	ListNode (KeyType newKey, T nodeValue) { searchKey = newKey; value = nodeValue; next = nullptr;}
 	void setNext(ListNode<KeyType, T>* nextPtr) { next = nextPtr;}
 	ListNode<KeyType, T>* getNext() const { return next;}
-	T getValue() const {return *value;}
-	KeyType getSearchKey() const {return *searchKey;}
+	T getValue() const {return value;}
+	KeyType getSearchKey() const {return searchKey;}
 };
 
 //*********************************************
@@ -56,6 +56,7 @@ public:
    // ...
    void enhancedDisplay(void visit(T &), void specialVisit(T &, int &), int &index) const;
    void displayList(void visit(T &)) const;
+   void displayList(void visit(T &, BinarySearchTree<T> *&), BinarySearchTree<T> *&tree) const;
 };
 
 
@@ -155,6 +156,19 @@ void LinkedList<KeyType, T>::displayList(void visit(T &)) const
         visit(nodePtr->getValue());  // Display the value in this node.
         nodePtr = nodePtr->getNext();         // Move to the next node.
     }
+}
+
+template <class KeyType, class T>
+void LinkedList<KeyType, T>::displayList(void visit(T &, 
+	BinarySearchTree<T> *&), BinarySearchTree<T> *&tree) const
+{
+	ListNode<KeyType, T> *nodePtr;
+	nodePtr = head;
+	while(nodePtr)
+	{
+		visit(nodePtr->getValue(), tree);
+		nodePtr = nodePtr->getNext();
+	}
 }
 
 //**************************************************

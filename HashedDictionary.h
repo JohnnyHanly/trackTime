@@ -33,6 +33,7 @@ public:
 	ListNode<KeyType, ItemType>* getItem(const KeyType& searchKey) const;
 	bool contains(const KeyType& searchKey) const;
 	void traverse(void visit(ItemType &)) const;
+	void traverse(void visit(ItemType&,BinarySearchTree<ItemType> *&), BinarySearchTree<ItemType> *&tree) const;
 	void specialTraverse(void visit(ItemType &), void specialVisit(ItemType &, int &), int &index) const;
 
 };
@@ -194,39 +195,30 @@ bool HashedDictionary<KeyType, ItemType>::contains(const KeyType& searchKey) con
 template <class KeyType, class ItemType>
 void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&)) const
 {
-	//my display function from hw5. it works fine for me
-	//ht_head->next points to the first element in the hash table
-	//oh and i had a sentinel for my collision thats why I start
-	//at cur->overflow->next;
-	//node* cur = ht_head->next;
-	//while (cur)
-	//{
-	//	if (cur->taken)
-	//	{
-	//		printMovie(cur->data);
-	//		if (cur->overflow->next)
-	//		{
-	//			node* pWalk = cur->overflow->next;
-	//			while (pWalk)
-	//			{
-	//				printMovie(pWalk->data);
-	//				pWalk = pWalk->next;
-	//			}
-	//		}
-	//	}
-	//	cur = cur->next;
-	//}
-	//int i = 0;
+	int i = 0;
 	LinkedList<KeyType, ItemType>* nodePtr;
-	//while(i < hashTableSize)
-	//{
-	//	nodePtr = hashTable[i].getList();
-	//	//nodePtr->displayList(visit);
-	//	++i;
-	//}
-	nodePtr = hashTable[0].getList();
-	nodePtr->displayList(visit);
+	while(i < hashTableSize)
+	{
+		nodePtr = hashTable[i].getList();
+		nodePtr->displayList(visit);
+		++i;
+	}
 }
+
+template <class KeyType, class ItemType>
+void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&, 
+	BinarySearchTree<ItemType> *&), BinarySearchTree<ItemType> *&tree) const
+{
+	int i = 0;
+	LinkedList<KeyType, ItemType>* nodePtr;
+	while(i < hashTableSize)
+	{
+		nodePtr = hashTable[i].getList();
+		nodePtr->displayList(visit, tree);
+		++i;
+	}
+}
+
 
 template <class KeyType, class ItemType>
 void HashedDictionary<KeyType, ItemType>::specialTraverse(void visit(ItemType &), void specialVisit(ItemType &, int &), int &index) const
