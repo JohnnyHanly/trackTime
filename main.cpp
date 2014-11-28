@@ -10,10 +10,23 @@
 using namespace std;
 
 const int MAX_ENTRIES = 200;
+const int MAX_NAME = 17;
+const int MAX_ID = 8;
+const int MAX_CIRCUIT = 15;
+const int MAX_DATE = 10;
+const int MAX_FINISH = 7;
 
 bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
 			  string &inputFileName, int &numElem);
-bool createTree(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
+//bool createTree(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
+bool isName(string str);
+bool isId(string str);
+bool isCircuit(string str);
+bool isDate(string str);
+bool isTime(string str);
+
+void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree,
+			  string *stringArr, int &numElem);
 void display(Racer &rc);
 void printLabels();
 void displayIndent(int &indent);
@@ -23,6 +36,7 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 void displayStats(HashedDictionary<string, Racer>* dict);
 void searchByName(BinarySearchTree<Racer>* tree);
 void searchById(HashedDictionary<string, Racer>* dict);
+
 
 int main()
 {
@@ -44,6 +58,8 @@ int main()
 			getline(cin, inputStr);
 			if (inputStr[0] == 'Q')
 				break;
+			if(inputStr[0] == 'A')
+				addRacer(racerDictionary, racerTree, stringArr, numElem);
 			switchMenu(racerDictionary, racerTree, inputStr);
 		}
 	}
@@ -105,7 +121,7 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 	inFile.open("inputRacer.txt");
 	if(!inFile)
 	{
-		cout << "Error opening racer.txt Closing...\n";
+		cout << "Error opening inputRacer.txt Closing...\n";
 		return notEmpty;
 	}
 	else
@@ -153,13 +169,255 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 	return notEmpty;
 }
 
+bool isName(string str)
+{
+	int i = 0;
+	while(i < str.length())
+	{
+		if(!isalpha(str.at(i)) && !isspace(str.at(i)))
+			return false;
+		++i;
+	}
+	return true;
+}
+
+bool isId(string str)
+{
+	int i = 0;
+	while(i < str.length())
+	{
+		if(i == 0)
+		{
+			if(!isalpha(str.at(i)))
+				return false;
+		}
+		else
+		{
+			if(!isdigit(str.at(i)))
+				return false;
+		}
+		++i;
+	}
+	return true;
+}
+
+bool isCircuit(string str)
+{
+	int i = 0;
+	while(i < str.length())
+	{
+		if(!isalpha(str.at(i)) && !isspace(str.at(i)))
+			return false;
+		++i;
+	}
+	return true;
+}
+
+bool isDate(string str)
+{
+	int i = 0;
+	while(i < str.length())
+	{
+		if(i == 2 || i == 5)
+		{
+			if(str.at(i) != '/')
+				return false;
+		}
+		else
+		{
+			if(!isdigit(str.at(i)))
+				return false;
+		}
+		++i;
+	}
+	return true;
+}
+
+bool isTime(string str)
+{
+	int i = 0;
+	while(i < str.length())
+	{
+		if(i == str.length()-3)
+		{
+			if(str.at(i) != '.')
+				return false;
+		}
+		else
+		{
+			if(!isdigit(str.at(i)))
+				return false;
+		}
+		++i;
+	}
+	return true;
+}
+
+
+
+void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree,
+			  string *stringArr, int &numElem)
+{
+	Racer *newRacer;
+	int i = numElem;
+	if(numElem+5 > MAX_ENTRIES)
+	{
+		cout << "SORRY, THE LIST IS TOO FULL. DELETE A RACER TO MAKE ROOM.\n";
+		return;
+	}
+	cout << "INPUT FORMAT:\n"
+		"NAME    : 17 CHAR MAX, FIRST LAST.\n"
+		"  ID    : 8 CHAR MAX.\n"
+		"CIRCUIT : 15 CHAR MAX.\n"
+		"DATE    : MM/DD/YYY.\n"
+		"FIN TIME: TIME TO FINISH RACE IN SECONDS TO 2 DECIMAL PLACES.\n";
+	cout << "Enter the name of the racer to add:\n";
+	getline(cin, stringArr[i]);
+	if(stringArr[i].length() > MAX_NAME)
+	{
+		cout << "NAME TOO LONG, PRESS A TO TRY AGAIN.\n";
+		stringArr[i].clear();
+		return;
+	}
+	else if(!isName(stringArr[i]))
+	{
+		cout << "INVALID NAME, PRESS A TO TRY AGAIN.\n";
+		stringArr[i].clear();
+		return;
+	}
+	else
+	{
+		newRacer = new Racer(&stringArr[i]);
+		++i;
+	}
+	cout << "Enter the ID number of the racer:\n";
+	getline(cin, stringArr[i]);
+	if(stringArr[i].length() > MAX_ID)
+	{
+		cout << "ID NUMBER TOO LONG, PRESS A TO TRY AGAIN.\n";
+		while(i >= numElem)
+		{
+			stringArr[i].clear();
+			--i;
+		}
+		delete newRacer;
+		return;
+	}
+	else if(!isId(stringArr[i]))
+	{
+		cout << "INVALID ID NUMBER, PRESS A TO TRY AGAIN.\n";
+		while(i >= numElem)
+		{
+			stringArr[i].clear();
+			--i;
+		}
+		delete newRacer;
+		return;
+	}
+	else
+	{
+		newRacer->setIdNum(&stringArr[i]);
+		++i;
+	}
+	cout << "Enter the Circuit name of the race:\n";
+	getline(cin, stringArr[i]);
+	if(stringArr[i].length() > MAX_CIRCUIT)
+	{
+		cout << "CIRCUIT NAME TOO LONG, PRESS A TO TRY AGAIN.\n";
+		while(i >= numElem)
+		{
+			stringArr[i].clear();
+			--i;
+		}
+		delete newRacer;
+		return;
+	}
+	else if(!isCircuit(stringArr[i]))
+	{
+		cout << "INVALID CIRCUIT NAME, PRESS A TO TRY AGAIN.\n";
+		while(i >= numElem)
+		{
+			stringArr[i].clear();
+			--i;
+		}
+		delete newRacer;
+		return;
+	}
+	else
+	{
+		newRacer->setCircuitName(&stringArr[i]);
+		++i;
+	}
+	cout << "Enter the date of the race:\n";
+	getline(cin, stringArr[i]);
+	if(stringArr[i].length() > MAX_DATE)
+	{
+		cout << "DATE TOO LONG, PRESS A TO TRY AGAIN.\n";
+		while(i >= numElem)
+		{
+			stringArr[i].clear();
+			--i;
+		}
+		delete newRacer;
+		return;
+	}
+	else if(!isDate(stringArr[i]))
+	{
+		cout << "INVALID DATE, PRESS A TO TRY AGAIN.\n";
+		while(i >= numElem)
+		{
+			stringArr[i].clear();
+			--i;
+		}
+		delete newRacer;
+		return;
+	}
+	else
+	{
+		newRacer->setDate(&stringArr[i]);
+		++i;
+	}
+	cout << "Enter the racer's finish time.\n";
+	getline(cin, stringArr[i]);
+	if(stringArr[i].length() > MAX_FINISH)
+	{
+		cout << "TIME TOO LONG, PRESS A TO TRY AGAIN.\n";
+		while(i >= numElem)
+		{
+			stringArr[i].clear();
+			--i;
+		}
+		delete newRacer;
+		return;
+	}
+	else if(!isTime(stringArr[i]))
+	{
+		cout << "INVALID TIME, PRESS A TO TRY AGAIN.\n";
+		while(i >= numElem)
+		{
+			stringArr[i].clear();
+			--i;
+		}
+		delete newRacer;
+		return;
+	}
+	else
+	{
+		newRacer->setFinishTime(&stringArr[i]);
+		++i;
+	}
+	numElem = i;
+	dict->add(*(newRacer->getIdNum()), *newRacer);
+	tree->insert(*newRacer);
+}
+
+
+
 
 void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr)
 {
 	switch(inputStr[0])
 	{
-	case 'A' : 
-		break;
 	case 'D' : printLabels();
 		dict->traverse(display);
 		break;
@@ -188,6 +446,7 @@ void displayMenu()
 	cout << "-----HELP MENU-----\n" <<
 		"S SEARCH USING RACER NAME (case sensitive)\n"
 		"F SEARCH USING RACER ID NUMBER(8 CHARACTERS)\n"
+		"A ADD A NEW RACER TO THE LIST\n"
 		"D DISPLAY HASHED TABLE OF RACERS\n"
 		"P DISPLAY DRIVERS IN ALPHABETICAL ORDER(FIRST NAME)\n"
 		"T SHOW HASH TABLE STATISTICS\n"
@@ -294,3 +553,4 @@ void searchById(HashedDictionary<string, Racer>* dict)
 		cout << "NO RACER FOUND WITH THAT ID.\n";
 
 }
+
