@@ -22,6 +22,7 @@ void displayMenu();
 void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr);
 void displayStats(HashedDictionary<string, Racer>* dict);
 void searchByName(BinarySearchTree<Racer>* tree);
+void searchById(HashedDictionary<string, Racer>* dict);
 
 int main()
 {
@@ -162,6 +163,8 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 	case 'D' : printLabels();
 		dict->traverse(display);
 		break;
+	case 'F' : searchById(dict);
+		break;
 	case 'I': tree->preOrder(display, displayIndent, 1);
 		break;
 	case 'P' : printLabels();
@@ -184,6 +187,7 @@ void displayMenu()
 {
 	cout << "-----HELP MENU-----\n" <<
 		"S SEARCH USING RACER NAME (case sensitive)\n"
+		"F SEARCH USING RACER ID NUMBER(8 CHARACTERS)\n"
 		"D DISPLAY HASHED TABLE OF RACERS\n"
 		"P DISPLAY DRIVERS IN ALPHABETICAL ORDER(FIRST NAME)\n"
 		"T SHOW HASH TABLE STATISTICS\n"
@@ -266,4 +270,27 @@ void searchByName(BinarySearchTree<Racer> *tree)
 	else
 		cout << "\nRACER NOT FOUND!\n";
 	delete searchRacer;
+}
+
+
+void searchById(HashedDictionary<string, Racer>* dict)
+{
+	ListNode<string, Racer>* nodePtr;
+	string searchString;
+	cout << "Please enter the ID number that you are searching for(8 char max).\n"; 
+	getline(cin, searchString);
+	if(searchString.length() > 8)
+	{
+		cout << "ID NUMBERS ARE 8 CHAR MAX!\n";
+		return;
+	}
+	nodePtr = dict->getItem(searchString);
+	if(nodePtr)
+	{
+		cout << "RACER FOUND!\n";
+		display(nodePtr->getValue());
+	}
+	else
+		cout << "NO RACER FOUND WITH THAT ID.\n";
+
 }
