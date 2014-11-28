@@ -155,7 +155,8 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 	case 'D' : printLabels();
 		dict->traverse(display);
 		break;
-	case 'P' : tree->inOrder(display);
+	case 'P' : printLabels();
+		tree->inOrder(display);
 		break;
 	case 'T' : displayStats(dict);
 		break;
