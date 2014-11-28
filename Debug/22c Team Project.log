@@ -1,4 +1,4 @@
 ﻿Project file contains ToolsVersion="12.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
   main.cpp
-main.cpp(212): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+main.cpp(223): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
   22c Team Project.vcxproj -> C:\Users\Tim\Documents\GitHub\team project\trackTime\Debug\22c Team Project.exe

@@ -28,7 +28,9 @@ public:
     date = nullptr; finishTime = nullptr; }
   Racer(string *newName) { name = newName; idNum = nullptr; circuitName = nullptr;
     date = nullptr; finishTime = nullptr; }
-  Racer(string newName, string newId) { name = &newName; idNum = &newId; 
+  //Racer(string *newId) { name = nullptr; idNum = newId; 
+  //  circuitName = nullptr; date = nullptr; finishTime = nullptr; }
+  Racer(string *newName, string *newId) { name = newName; idNum = newId; 
     circuitName = nullptr; date = nullptr; finishTime = nullptr; }
   
   string* getFinishTime() const{ return finishTime; }

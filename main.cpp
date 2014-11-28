@@ -16,10 +16,12 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 bool createTree(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
 void display(Racer &rc);
 void printLabels();
+void displayIndent(int &indent);
 void addToTree(Racer &rc, BinarySearchTree<Racer> *&tree);
 void displayMenu();
 void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr);
 void displayStats(HashedDictionary<string, Racer>* dict);
+void searchByName(BinarySearchTree<Racer>* tree);
 
 int main()
 {
@@ -53,22 +55,27 @@ int main()
 
 void display(Racer &rc)
 {
-	cout << setw(20);
+	cout << setw(17);
 	cout << left << *(rc.getName());
 	cout << setw(10) << *(rc.getIdNum());
-	cout << setw(20) << *(rc.getCircuitName());
-	cout << setw(12) << *(rc.getDate());
-	cout << setw(10) << *(rc.getFinishTime()) << endl;
+	cout << setw(16) << *(rc.getCircuitName());
+	cout << setw(11) << *(rc.getDate());
+	cout << setw(8) << *(rc.getFinishTime()) << endl;
 }
 
 void printLabels()
 {
-	cout << setw(20);
+	cout << setw(17);
 	cout << left << "NAME";
 	cout << setw(10) << "ID NUMBER";
-	cout << setw(20) << "CIRCUIT NAME";
-	cout << setw(12) << "DATE";
-	cout << setw(10) << "FINISH TIME" << endl;
+	cout << setw(15) << "CIRCUIT NAME";
+	cout << setw(11) << "DATE";
+	cout << setw(8) << "FIN TIME" << endl;
+}
+
+void displayIndent(int &indent)
+{
+	cout << setw(2*indent) << right << indent << ' ';
 }
 
 void addToTree(Racer &rc, BinarySearchTree<Racer> *&tree)
@@ -155,6 +162,8 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 	case 'D' : printLabels();
 		dict->traverse(display);
 		break;
+	case 'I': tree->preOrder(display, displayIndent, 1);
+		break;
 	case 'P' : printLabels();
 		tree->inOrder(display);
 		break;
@@ -162,7 +171,7 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		break;
 	case 'M' : displayMenu();
 		break;
-	case 'S': cout << "You are Searching for something...\n";
+	case 'S': searchByName(tree);
 		break;
 	default:
 		cout << "Usage: Enter M for available commands\n\n";
@@ -178,6 +187,7 @@ void displayMenu()
 		"D DISPLAY HASHED TABLE OF RACERS\n"
 		"P DISPLAY DRIVERS IN ALPHABETICAL ORDER(FIRST NAME)\n"
 		"T SHOW HASH TABLE STATISTICS\n"
+		"I DISPLAY DRIVERS IN INDENTED TREE FORM\n"
 		"M SHOW THIS MENU (BUT YOU ALREADY KNOW THAT)\n"
 		"Q EXIT PROGRAM (GOODBYE)\n";
 }
@@ -230,4 +240,30 @@ void displayStats(HashedDictionary<string, Racer>* dict)
 	cout << "  INDEX OF LARGEST LINKED LIST : " << longestIndex << "\n";
 	cout << "  AVERAGE LINKED LISTS         : " << float(numItems) / float(hashedArraySize - emptyCount) << "\n\n";
 	
+}
+
+void searchByName(BinarySearchTree<Racer> *tree)
+{
+	Racer *searchRacer;
+	Racer foundRacer;
+	string tempStr;
+
+
+	cout << "\nPlease enter the name of the racer you are looking for(17 char max)\n";
+	getline(cin, tempStr);
+	//cin.ignore();
+	if(tempStr.length() > 17)
+	{
+		cout << "17 characters maximum! Press S to try again.\n";
+		return;
+	}
+	searchRacer = new Racer(&tempStr);
+	if(tree->getEntry(*searchRacer, foundRacer))
+	{
+		cout << "\nRACER FOUND!\n";
+		display(foundRacer);
+	}
+	else
+		cout << "\nRACER NOT FOUND!\n";
+	delete searchRacer;
 }
