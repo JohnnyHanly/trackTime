@@ -93,7 +93,7 @@ void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		getline(cin, userInput);
 		if (userInput[0] == 'Y')
 		{
-			dict->remove(nodePtr);
+			dict->remove(searchString);
 		}
 		else
 		{

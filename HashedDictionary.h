@@ -28,7 +28,7 @@ public:
 	int getLongestIndex(int &biggestCount) const;
 	int getHashIndex(const KeyType& key) const;
 	bool add(const KeyType& searchKey, const ItemType& newItem);
-	//bool remove(const KeyType& searchKey); don't need for this assignment :)
+	bool remove(const KeyType& searchKey); //don't need for this assignment :)
 	void clear();
 	ListNode<KeyType, ItemType>* getItem(const KeyType& searchKey) const;
 	bool contains(const KeyType& searchKey) const;
@@ -38,6 +38,15 @@ public:
 
 };
 
+
+template < class KeyType, class ItemType > bool HashedDictionary < KeyType, ItemType >::remove(const KeyType & searchKey)
+{
+	int index = getHashIndex(searchKey);
+	LinkedList<KeyType, ItemType>* targetList = hashTable[index].getList();
+	ListNode<KeyType, ItemType>* targetNode = targetList->findItem(searchKey);
+	//targetNode now points at node to be deleted
+	return true;
+}   
 
 template<class KeyType, class ItemType>
 HashedDictionary<KeyType, ItemType>::HashedDictionary()
