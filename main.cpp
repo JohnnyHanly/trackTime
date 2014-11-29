@@ -17,7 +17,7 @@ const int MAX_DATE = 10;
 const int MAX_FINISH = 7;
 
 bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
-			  string &inputFileName, int &numElem);
+			  string inputFileName, int &numElem);
 //bool createTree(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
 bool isName(string str);
 bool isId(string str);
@@ -36,13 +36,15 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 void displayStats(HashedDictionary<string, Racer>* dict);
 void searchByName(BinarySearchTree<Racer>* tree);
 void searchById(HashedDictionary<string, Racer>* dict);
+void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
 
 
 int main()
 {
     HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>();
 	BinarySearchTree<Racer>* racerTree = new BinarySearchTree<Racer>();
-	string inputFile;
+	
+	const string inputFile = "inputRacer.txt";
 	string inputStr = " ";
 	string *stringArr = nullptr;
 	int numElem = 0;
@@ -51,6 +53,7 @@ int main()
 	
 	if(readFileHash(racerDictionary, stringArr, inputFile, numElem))
 	{
+		
 		racerDictionary->traverse(addToTree, racerTree);
 		while(inputStr[0] != 'Q')
 		{
@@ -62,13 +65,47 @@ int main()
 				addRacer(racerDictionary, racerTree, stringArr, numElem);
 			switchMenu(racerDictionary, racerTree, inputStr);
 		}
+		
 	}
 	
 	
   return 0;
 }
 
-
+void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree)
+{
+	ListNode<string, Racer>* nodePtr;
+	string searchString;
+	cout << "Please enter ID for deletion (8 chars) : ";
+	getline(cin, searchString);
+	if (searchString.length() > 8)
+	{
+		cout << "ID NUMBERS ARE 8 CHAR MAX!\n";
+		return;
+	}
+	nodePtr = dict->getItem(searchString);
+	if (nodePtr)
+	{
+		cout << "RACER FOUND!\n";
+		display(nodePtr->getValue());
+		string userInput = " ";
+		cout << "ARE YOU SURE YOU WANT TO DELETE? (Y/n): ";
+		getline(cin, userInput);
+		if (userInput[0] == 'Y')
+		{
+			dict->remove(nodePtr);
+		}
+		else
+		{
+			return;
+		}	
+	}
+	else
+	{
+		cout << "NO RACER FOUND WITH THAT ID.\n";
+	}
+	
+}
 
 void display(Racer &rc)
 {
@@ -110,7 +147,7 @@ void addToTree(Racer &rc, BinarySearchTree<Racer> *&tree)
 // parameter. The function returns true if the file is read and false
 // if the file fails to open or the string array is empty.
 bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
-				  string &inputFileName, int &numElem)
+				  string inputFileName, int &numElem)
 {
 	ifstream inFile;
 	string readString;
@@ -118,14 +155,12 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 	string *stringArr = new string[MAX_ENTRIES]();
 	int i = 0;
 
-	inFile.open("inputRacer.txt");
+	inFile.open(inputFileName);
 	if(!inFile)
 	{
 		cout << "Error opening inputRacer.txt Closing...\n";
 		return notEmpty;
 	}
-	else
-		inputFileName = "inputRacer.txt";
 	while(getline(inFile, readString) && i < MAX_ENTRIES)
 	{
 		stringArr[i] = readString;
@@ -434,6 +469,8 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		break;
 	case 'S': searchByName(tree);
 		break;
+	case 'R': removeById(dict, tree);
+		break;
 	default:
 		cout << "Usage: Enter M for available commands\n\n";
 	}
@@ -451,8 +488,9 @@ void displayMenu()
 		"P DISPLAY DRIVERS IN ALPHABETICAL ORDER(FIRST NAME)\n"
 		"T SHOW HASH TABLE STATISTICS\n"
 		"I DISPLAY DRIVERS IN INDENTED TREE FORM\n"
+		"R REMOVES ITEM BY LICENSE NUMBER\n"
 		"M SHOW THIS MENU (BUT YOU ALREADY KNOW THAT)\n"
-		"Q EXIT PROGRAM (GOODBYE)\n";
+		"Q EXIT PROGRAM (GOODBYE)\n\n";
 }
 
 

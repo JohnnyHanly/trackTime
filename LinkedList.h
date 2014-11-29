@@ -21,6 +21,8 @@ public:
     ListNode (T nodeValue){ value = nodeValue; next = nullptr;}
 	ListNode (KeyType newKey, T nodeValue) { searchKey = newKey; value = nodeValue; next = nullptr;}
 	void setNext(ListNode<KeyType, T>* nextPtr) { next = nextPtr;}
+	void setValue(T valueIn) { value = valueIn; };
+	void setSearchKey(KeyType searchKeyIn) { searchKey = searchKeyIn; };
 	ListNode<KeyType, T>* getNext() const { return next;}
 	T getValue() const {return value;}
 	KeyType getSearchKey() const {return searchKey;}

@@ -19,7 +19,7 @@ protected:
 
 public:
 	// "admin" functions
- 	BinaryTree() {rootPtr = 0; count = 0;}
+	BinaryTree() { rootPtr = 0; count = 0; }
 	BinaryTree(const BinaryTree<ItemType> & tree){ rootPtr = copyTree(tree.rootPtr); }
 	virtual ~BinaryTree() { destroyTree(rootPtr); rootPtr=0; count = 0; }
 	BinaryTree & operator = (const BinaryTree & sourceTree);
