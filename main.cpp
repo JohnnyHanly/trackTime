@@ -38,7 +38,7 @@ void searchByName(BinarySearchTree<Racer>* tree);
 void searchById(HashedDictionary<string, Racer>* dict);
 void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
 void displayToFile(Racer &rc);
-
+void displayToImport(Racer &rc);
 
 int main()
 {
@@ -119,13 +119,29 @@ void display(Racer &rc)
 	cout << setw(8) << *(rc.getFinishTime()) << endl;
 }
 
+void displayToImport(Racer &rc)
+{
+	
+	string fileName ="output.txt"; // need to be able to create and ouput name
+		// based on the unique dictionary that exists.
+	ofstream file;
+
+	file.open(fileName,ios::out|ios::app);
+	file<< *(rc.getName()) <<endl;
+	file<< *(rc.getIdNum()) <<endl;
+	file<< *(rc.getCircuitName()) << endl;
+	file<< *(rc.getDate())<< endl;
+	file<< *(rc.getFinishTime())<< endl;
+	file.close();
+
+}
 void displayToFile(Racer &rc)
 {
-	const string fileName = "output.txt";
+	const string fileName = "print.txt";
 	ofstream file;
 	file.open(fileName.c_str(), ios::out | ios::app);
 	file << setw(17);
-	file<< left << *(rc.getName());
+	file << left << *(rc.getName());
 	file << setw(10) << *(rc.getIdNum());
 	file << setw(16) << *(rc.getCircuitName());
 	file << setw(11) << *(rc.getDate());
@@ -488,6 +504,15 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		break;
 	case 'O': dict->traverse(displayToFile);
 		break;
+	case 'U': 
+		{
+		ofstream ofs;
+		ofs.open("output.txt");
+		ofs.clear(); // ensures there is no garbage data introduced into output file to import. 
+		ofs.close();
+		dict->traverse(displayToImport);
+		break; 
+		}
 	default:
 		cout << "Usage: Enter M for available commands\n\n";
 	}
@@ -506,7 +531,8 @@ void displayMenu()
 		"T SHOW HASH TABLE STATISTICS\n"
 		"I DISPLAY DRIVERS IN INDENTED TREE FORM\n"
 		"R REMOVES ITEM BY LICENSE NUMBER\n"
-		"O SAVES DISPLAY OUTPUT TO FILE\n";
+		"O SAVES DISPLAY OUTPUT TO FILE\n"
+		"U SAVES THE CURRENT RACE TO BE REIMPORTED\n"
 		"M SHOW THIS MENU (BUT YOU ALREADY KNOW THAT)\n"
 		"Q EXIT PROGRAM (GOODBYE)\n\n";
 }
@@ -609,4 +635,3 @@ void searchById(HashedDictionary<string, Racer>* dict)
 		cout << "NO RACER FOUND WITH THAT ID.\n";
 
 }
-
