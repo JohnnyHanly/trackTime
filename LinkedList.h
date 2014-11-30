@@ -52,7 +52,7 @@ public:
    void insertNode(KeyType, T);
    LinkedList<KeyType, T>* addNode(ListNode<KeyType, T>* newNode);
    ListNode<KeyType, T>* findItem(KeyType findKey) const;
-   // delete
+   bool deleteNode(ListNode<KeyType, T>* deleteMe);
    // search
    // other linked list operations ...
    // ...
@@ -61,7 +61,32 @@ public:
    void displayList(void visit(T &, BinarySearchTree<T> *&), BinarySearchTree<T> *&tree) const;
 };
 
-
+template <class KeyType, class T>
+bool LinkedList<KeyType, T>::deleteNode(ListNode<KeyType, T>* deleteMe)
+{
+	if (count == 0)
+	{
+		return false;
+	}
+	if (deleteMe == head)
+	{
+		head = nullptr;
+		--count;
+		return true;
+	}
+	ListNode<KeyType, T>* prev;
+	ListNode<KeyType, T>* cur = head;
+	while (cur != deleteMe)
+	{
+		prev = cur;
+		cur = cur->getNext();
+	}
+	
+	prev->setNext(deleteMe->getNext());
+	--count;
+	
+	return true;
+}
 
 
 template <class KeyType, class T>

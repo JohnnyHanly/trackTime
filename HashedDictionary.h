@@ -45,6 +45,7 @@ template < class KeyType, class ItemType > bool HashedDictionary < KeyType, Item
 	LinkedList<KeyType, ItemType>* targetList = hashTable[index].getList();
 	ListNode<KeyType, ItemType>* targetNode = targetList->findItem(searchKey);
 	//targetNode now points at node to be deleted
+	targetList->deleteNode(targetNode);
 	return true;
 }   
 
