@@ -37,6 +37,7 @@ void displayStats(HashedDictionary<string, Racer>* dict);
 void searchByName(BinarySearchTree<Racer>* tree);
 void searchById(HashedDictionary<string, Racer>* dict);
 void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
+void displayToFile(Racer &rc);
 
 
 int main()
@@ -94,6 +95,7 @@ void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		if (userInput[0] == 'Y')
 		{
 			dict->remove(searchString);
+			tree->remove(nodePtr->getValue());
 		}
 		else
 		{
@@ -115,6 +117,20 @@ void display(Racer &rc)
 	cout << setw(16) << *(rc.getCircuitName());
 	cout << setw(11) << *(rc.getDate());
 	cout << setw(8) << *(rc.getFinishTime()) << endl;
+}
+
+void displayToFile(Racer &rc)
+{
+	const string fileName = "output.txt";
+	ofstream file;
+	file.open(fileName.c_str(), ios::out | ios::app);
+	file << setw(17);
+	file<< left << *(rc.getName());
+	file << setw(10) << *(rc.getIdNum());
+	file << setw(16) << *(rc.getCircuitName());
+	file << setw(11) << *(rc.getDate());
+	file << setw(8) << *(rc.getFinishTime()) << endl;
+	file.close();
 }
 
 void printLabels()
@@ -448,7 +464,6 @@ void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tr
 
 
 
-
 void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr)
 {
 	switch(inputStr[0])
@@ -471,6 +486,8 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		break;
 	case 'R': removeById(dict, tree);
 		break;
+	case 'O': dict->traverse(displayToFile);
+		break;
 	default:
 		cout << "Usage: Enter M for available commands\n\n";
 	}
@@ -489,6 +506,7 @@ void displayMenu()
 		"T SHOW HASH TABLE STATISTICS\n"
 		"I DISPLAY DRIVERS IN INDENTED TREE FORM\n"
 		"R REMOVES ITEM BY LICENSE NUMBER\n"
+		"O SAVES DISPLAY OUTPUT TO FILE\n";
 		"M SHOW THIS MENU (BUT YOU ALREADY KNOW THAT)\n"
 		"Q EXIT PROGRAM (GOODBYE)\n\n";
 }
