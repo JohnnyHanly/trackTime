@@ -84,6 +84,11 @@ void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		cout << "ID NUMBERS ARE 8 CHAR MAX!\n";
 		return;
 	}
+	else if(!isId(searchString))
+	{
+		cout << "THIS IS NOT A VALID ID NUMBER!\n";
+		return;
+	}
 	nodePtr = dict->getItem(searchString);
 	if (nodePtr)
 	{

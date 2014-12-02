@@ -1,9 +1,9 @@
 ﻿Project file contains ToolsVersion="12.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
   main.cpp
-main.cpp(175): warning C4018: '<' : signed/unsigned mismatch
-main.cpp(187): warning C4018: '<' : signed/unsigned mismatch
-main.cpp(207): warning C4018: '<' : signed/unsigned mismatch
-main.cpp(219): warning C4018: '<' : signed/unsigned mismatch
-main.cpp(239): warning C4018: '<' : signed/unsigned mismatch
-main.cpp(489): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+main.cpp(247): warning C4018: '<' : signed/unsigned mismatch
+main.cpp(259): warning C4018: '<' : signed/unsigned mismatch
+main.cpp(279): warning C4018: '<' : signed/unsigned mismatch
+main.cpp(291): warning C4018: '<' : signed/unsigned mismatch
+main.cpp(311): warning C4018: '<' : signed/unsigned mismatch
+main.cpp(573): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
   22c Team Project.vcxproj -> C:\Users\Tim\Documents\GitHub\team project\trackTime\Debug\22c Team Project.exe
