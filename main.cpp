@@ -5,6 +5,7 @@
 #include "BinarySearchTree.h"
 #include "HashedDictionary.h"
 #include "LinkedList.h"
+#include "Stack.h"
 
 
 using namespace std;
@@ -26,54 +27,101 @@ bool isDate(string str);
 bool isTime(string str);
 
 void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree,
-			  string *stringArr, int &numElem);
+	string *stringArr, int &numElem, Stack<Racer>* actionList, Stack<char>* commandList);
 void display(Racer &rc);
 void printLabels();
 void displayIndent(int &indent);
 void addToTree(Racer &rc, BinarySearchTree<Racer> *&tree);
 void displayMenu();
-void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr);
+void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr, string *stringArr, Stack<Racer> *actionList, Stack<char> *commandList, int numElem);
 void displayStats(HashedDictionary<string, Racer>* dict);
 void searchByName(BinarySearchTree<Racer>* tree);
 void searchById(HashedDictionary<string, Racer>* dict);
-void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
+void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, Stack<Racer> *actionList, Stack<char> *commandList);
 void displayToFile(Racer &rc);
 void displayToImport(Racer &rc);
+void undo(Stack<Racer> *actionList, Stack<char> *commandList, HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
 
 int main()
 {
     HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>();
 	BinarySearchTree<Racer>* racerTree = new BinarySearchTree<Racer>();
-	
+	Stack<Racer>* actionList = new Stack < Racer > ;
+	Stack<char>* commandList = new Stack < char > ; 
+
 	const string inputFile = "inputRacer.txt";
 	string inputStr = " ";
 	string *stringArr = nullptr;
 	int numElem = 0;
 	bool boolVar = false;
 	int tempCount = 0;
-	
+	cout << "---WELCOME TO RACER ANALYZER VERSION 9000 MEGA EDITION---\n\n";
+	cout << "\tSEARCHING FOR FILE: " << inputFile << endl << endl;
 	if(readFileHash(racerDictionary, stringArr, inputFile, numElem))
 	{
-		
+		cout << '\t' << inputFile << " FOUND AND PROCESSED\n\n";
 		racerDictionary->traverse(addToTree, racerTree);
+		cout << "\tENTERING MENU...\n\n";
 		while(inputStr[0] != 'Q')
 		{
 			cout << "[CIS22C@racer]$ ";
 			getline(cin, inputStr);
 			if (inputStr[0] == 'Q')
 				break;
-			if(inputStr[0] == 'A')
-				addRacer(racerDictionary, racerTree, stringArr, numElem);
-			switchMenu(racerDictionary, racerTree, inputStr);
+			switchMenu(racerDictionary, racerTree, inputStr, stringArr, actionList, commandList, numElem);
 		}
 		
 	}
 	
+
 	
   return 0;
 }
 
-void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree)
+void undo(Stack<Racer> *actionList, Stack<char> *commandList, HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree)
+{
+	char command;
+	Racer undoMe;
+	if (commandList->getCount() != actionList->getCount() || commandList->isEmpty() || actionList->isEmpty())
+	{
+		cout << "No previous commands\n";
+		return;
+	}
+	commandList->pop(command);
+	actionList->pop(undoMe);
+	string ID = *(undoMe.getIdNum());
+	if (command == '+')
+	{
+		//string ID = *(undoMe.getIdNum());
+		//remove from hashLL
+		//dict->remove(ID);
+
+		//remove from tree
+		ListNode<string, Racer>* nodePtr;
+		string searchString = ID;
+		nodePtr = dict->getItem(searchString);
+		if (nodePtr)
+		{
+			dict->remove(searchString);
+			tree->remove(nodePtr->getValue());
+			cout << "INSERT RETRACTED\n";
+		}
+	}
+	if (command == '-')
+	{
+		dict->add(ID, undoMe);
+		tree->insert(undoMe);
+		cout << "DELETION RETRACTED\n";
+		cout << "RESTORED DRIVER -> ";
+		display(dict->getItem(ID)->getValue());
+		cout << endl;
+		
+	}
+
+}
+
+
+void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, Stack<Racer> *actionList, Stack<char> *commandList)
 {
 	ListNode<string, Racer>* nodePtr;
 	string searchString;
@@ -99,6 +147,9 @@ void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		getline(cin, userInput);
 		if (userInput[0] == 'Y')
 		{
+			Racer toStack = nodePtr->getValue();
+			actionList->push(toStack);
+			commandList->push('-');
 			dict->remove(searchString);
 			tree->remove(nodePtr->getValue());
 		}
@@ -328,7 +379,7 @@ bool isTime(string str)
 
 
 void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree,
-			  string *stringArr, int &numElem)
+			  string *stringArr, int &numElem, Stack<Racer>* actionList, Stack<char>* commandList)
 {
 	Racer *newRacer;
 	int i = numElem;
@@ -481,14 +532,19 @@ void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tr
 	numElem = i;
 	dict->add(*(newRacer->getIdNum()), *newRacer);
 	tree->insert(*newRacer);
+
+	actionList->push(*newRacer);
+	commandList->push('+');
 }
 
 
 
-void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr)
+void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr, string* stringArr, Stack<Racer> *actionList, Stack<char> *commandList, int numElem)
 {
 	switch(inputStr[0])
 	{
+	case 'A': addRacer(dict, tree, stringArr, numElem, actionList, commandList);
+		break;
 	case 'D' : printLabels();
 		dict->traverse(display);
 		break;
@@ -505,18 +561,20 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		break;
 	case 'S': searchByName(tree);
 		break;
-	case 'R': removeById(dict, tree);
+	case 'R': removeById(dict, tree, actionList, commandList);
 		break;
 	case 'O': dict->traverse(displayToFile);
 		break;
+	case 'Z': undo(actionList, commandList, dict, tree);
+		break;
 	case 'U': 
 		{
-		ofstream ofs;
-		ofs.open("output.txt");
-		ofs.clear(); // ensures there is no garbage data introduced into output file to import. 
-		ofs.close();
-		dict->traverse(displayToImport);
-		break; 
+			ofstream ofs;
+			ofs.open("output.txt");
+			ofs.clear(); // ensures there is no garbage data introduced into output file to import. 
+			ofs.close();
+			dict->traverse(displayToImport);
+			break; 
 		}
 	default:
 		cout << "Usage: Enter M for available commands\n\n";
@@ -538,6 +596,7 @@ void displayMenu()
 		"R REMOVES ITEM BY LICENSE NUMBER\n"
 		"O SAVES DISPLAY OUTPUT TO FILE\n"
 		"U SAVES THE CURRENT RACE TO BE REIMPORTED\n"
+		"Z UNDO LAST OPERATION\n"
 		"M SHOW THIS MENU (BUT YOU ALREADY KNOW THAT)\n"
 		"Q EXIT PROGRAM (GOODBYE)\n\n";
 }
