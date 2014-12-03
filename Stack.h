@@ -1,7 +1,7 @@
 /**~*~*
    Stack template
    Modified by Steven An
-*~**/
+*~*/
 #ifndef DYNAMICSTACK_H
 #define DYNAMICSTACK_H
 #include <iostream>

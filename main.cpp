@@ -19,7 +19,6 @@ const int MAX_FINISH = 7;
 
 bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
 			  string inputFileName, int &numElem);
-//bool createTree(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
 bool isName(string str);
 bool isId(string str);
 bool isCircuit(string str);
@@ -80,7 +79,7 @@ int main()
 
 void undo(Stack<Racer> *actionList, Stack<char> *commandList, HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree)
 {
-	char command;
+    char command;
 	Racer undoMe;
 	if (commandList->getCount() != actionList->getCount() || commandList->isEmpty() || actionList->isEmpty())
 	{
