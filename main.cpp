@@ -529,11 +529,19 @@ void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tr
 		++i;
 	}
 	numElem = i;
+	bool dupli = dict->contains(*(newRacer->getIdNum()));
+	if(dupli == true)
+	{
+		cout << "already have data for that racer, verify ID"<<endl;
+	}
+	else
+	{
 	dict->add(*(newRacer->getIdNum()), *newRacer);
 	tree->insert(*newRacer);
 
 	actionList->push(*newRacer);
 	commandList->push('+');
+	}
 }
 
 

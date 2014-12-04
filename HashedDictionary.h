@@ -195,7 +195,7 @@ bool HashedDictionary<KeyType, ItemType>::contains(const KeyType& searchKey) con
 		return false;
 	else
 	{
-		if(hashTable[i].getList->findItem(searchKey))
+		if(hashTable[i].getList()->findItem(searchKey))
 			return true;
 	}
 	return false;
