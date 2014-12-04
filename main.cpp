@@ -6,6 +6,7 @@
 #include "HashedDictionary.h"
 #include "LinkedList.h"
 #include "Stack.h"
+#include<ctime>
 
 
 using namespace std;
@@ -40,9 +41,11 @@ void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 void displayToFile(Racer &rc);
 void displayToImport(Racer &rc);
 void undo(Stack<Racer> *actionList, Stack<char> *commandList, HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree);
+string timeToString();
 
 int main()
 {
+
     HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>(199);
 	BinarySearchTree<Racer>* racerTree = new BinarySearchTree<Racer>();
 	Stack<Racer>* actionList = new Stack < Racer > ;
@@ -85,6 +88,20 @@ int main()
   return 0;
 }
 
+string timeToString()
+{
+	time_t rawtime;
+	struct tm * timeinfo;
+	char buffer[80];
+
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+
+	strftime(buffer, 80, "%d-%m-%Y_%I:%M:%S", timeinfo);
+	string str(buffer);
+	return str;
+}
+
 void undo(Stack<Racer> *actionList, Stack<char> *commandList, HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree)
 {
     char command;
@@ -118,7 +135,7 @@ void undo(Stack<Racer> *actionList, Stack<char> *commandList, HashedDictionary<s
 	{
 		dict->add(ID, undoMe);
 		tree->insert(undoMe);
-		cout << "DELETION RETRACTED\n";
+		cout << "DELETION RETRACTED\n\n";
 		cout << "RESTORED DRIVER -> ";
 		display(dict->getItem(ID)->getValue());
 		cout << endl;
@@ -352,13 +369,13 @@ bool isCircuit(string str)
 bool isDate(string str)
 {
 	int i = 0;
-	if (str.length() == 0)
+	if (str.length() == 0 || str.length() != 10)
 		return false;
 	while(i < str.length())
 	{
 		if(i == 2 || i == 5)
 		{
-			if(str.at(i) != '/')
+			if(str.at(i) != '/' )
 				return false;
 		}
 		else
@@ -401,7 +418,7 @@ void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tr
 		"NAME    : 17 CHAR MAX, FIRST LAST.\n"
 		"  ID    : 8 CHAR MAX.\n"
 		"CIRCUIT : 15 CHAR MAX.\n"
-		"DATE    : MM/DD/YYY.\n"
+		"DATE    : MM/DD/YYYY.\n"
 		"FIN TIME: TIME TO FINISH RACE IN SECONDS TO 2 DECIMAL PLACES.\n";
 	cout << "Enter the name of the racer to add:\n";
 	getline(cin, stringArr[i]);
@@ -580,7 +597,7 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		break;
 	case 'R': removeById(dict, tree, actionList, commandList);
 		break;
-	case 'O': dict->traverse(displayToFile);
+	case 'O': dict->traverse(displayToFile); cout << "Saved to file as print.txt";
 		break;
 	case 'Z': undo(actionList, commandList, dict, tree);
 		break;
