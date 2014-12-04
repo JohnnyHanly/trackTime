@@ -43,22 +43,30 @@ void undo(Stack<Racer> *actionList, Stack<char> *commandList, HashedDictionary<s
 
 int main()
 {
-    HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>();
+    HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>(199);
 	BinarySearchTree<Racer>* racerTree = new BinarySearchTree<Racer>();
 	Stack<Racer>* actionList = new Stack < Racer > ;
 	Stack<char>* commandList = new Stack < char > ; 
 
-	const string inputFile = "inputRacer.txt";
-	string inputStr = " ";
+	//const string inputFile = "inputRacer.txt";
+	string inputFile = "";
+	string inputStr = "";
 	string *stringArr = nullptr;
 	int numElem = 0;
 	bool boolVar = false;
 	int tempCount = 0;
-	cout << "---WELCOME TO RACER ANALYZER VERSION 9000 MEGA EDITION---\n\n";
-	cout << "\tSEARCHING FOR FILE: " << inputFile << endl << endl;
+	cout << "\n---WELCOME TO RACER ANALYZER VERSION 9000 MEGA EDITION---\n\n";
+	while (inputFile.empty())
+	{
+		cout << "Please enter in a filename: ";
+		getline(cin, inputFile);
+	}
+	cout << "\n\tSEARCHING FOR FILE: " << inputFile << endl << endl;
 	if(readFileHash(racerDictionary, stringArr, inputFile, numElem))
 	{
 		cout << '\t' << inputFile << " FOUND AND PROCESSED\n\n";
+		cout << '\t' << "INITIATING HASH TABLE WITH SIZE: " << racerDictionary->getTableSize();
+		cout << "\n\n";
 		racerDictionary->traverse(addToTree, racerTree);
 		cout << "\tENTERING MENU...\n\n";
 		while(inputStr[0] != 'Q')
@@ -245,7 +253,7 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 	inFile.open(inputFileName);
 	if(!inFile)
 	{
-		cout << "Error opening inputRacer.txt Closing...\n";
+		cout << "Error opening " << inputFileName << " closing...\n";
 		return notEmpty;
 	}
 	while(getline(inFile, readString) && i < MAX_ENTRIES)
@@ -294,6 +302,8 @@ bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 bool isName(string str)
 {
 	int i = 0;
+	if (str.length() == 0)
+		return false;
 	while(i < str.length())
 	{
 		if(!isalpha(str.at(i)) && !isspace(str.at(i)))
@@ -306,6 +316,8 @@ bool isName(string str)
 bool isId(string str)
 {
 	int i = 0;
+	if (str.length() == 0)
+		return false;
 	while(i < str.length())
 	{
 		if(i == 0)
@@ -326,6 +338,8 @@ bool isId(string str)
 bool isCircuit(string str)
 {
 	int i = 0;
+	if (str.length() == 0)
+		return false;
 	while(i < str.length())
 	{
 		if(!isalpha(str.at(i)) && !isspace(str.at(i)))
@@ -338,6 +352,8 @@ bool isCircuit(string str)
 bool isDate(string str)
 {
 	int i = 0;
+	if (str.length() == 0)
+		return false;
 	while(i < str.length())
 	{
 		if(i == 2 || i == 5)
@@ -357,19 +373,13 @@ bool isDate(string str)
 
 bool isTime(string str)
 {
+	if (str.length() == 0)
+		return false;
 	int i = 0;
 	while(i < str.length())
 	{
-		if(i == str.length()-3)
-		{
-			if(str.at(i) != '.')
-				return false;
-		}
-		else
-		{
 			if(!isdigit(str.at(i)))
 				return false;
-		}
 		++i;
 	}
 	return true;
@@ -631,19 +641,19 @@ void displayStats(HashedDictionary<string, Racer>* dict)
 	cout << "\n---------HASH TABLE STATISTICS---------\n\n";
 	
 	//smaller the barsize, the longer the graph. lol
-	int barSize = 4;
+	int barSize = 5;
 	cout << "  HASH TABLE LOAD FACTOR       : ";
 	float load = float(hashedArraySize - emptyCount) / float(hashedArraySize) * 100;
 	cout << "[";
-	float progress = load / barSize;
-	float max = hashedArraySize / barSize;
-	for (int i = 0; i < progress; i++)
+	float hashes = load / barSize;
+	float dashes = (100 - load) / barSize;
+	for (int i = 0; i < hashes; i++)
 	{
 		cout << '#';
 	}
-	for (int i = 1; i < max; i++)
+	for (int i = 1; i < dashes; i++)
 	{
-		cout << '-' << '-';
+		cout << "-";
 	}
 	cout << "] " << load << '%' << endl;
 	
