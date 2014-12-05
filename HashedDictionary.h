@@ -141,9 +141,16 @@ int HashedDictionary<KeyType, ItemType>::getLongestIndex(int &biggestCount) cons
 template<class KeyType, class ItemType>
 int HashedDictionary<KeyType, ItemType>::getHashIndex(const KeyType& key) const
 {
-	std::tr1::unordered_map<KeyType, ItemType> mapper;
-	typename std::tr1::unordered_map<KeyType, ItemType>::hasher hashFunction = mapper.hash_function();
-	return static_cast<int>(hashFunction(key) % hashTableSize);
+	int sum = key[0];
+	for (int i = 0; i < key.length(); i++)
+	{
+		sum += key[i];
+	}
+	sum = sum % hashTableSize;
+	return sum;
+	//std::tr1::unordered_map<KeyType, ItemType> mapper;
+	//typename std::tr1::unordered_map<KeyType, ItemType>::hasher hashFunction = mapper.hash_function();
+	//return static_cast<int>(hashFunction(key) % hashTableSize);
 }
 
 

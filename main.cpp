@@ -46,7 +46,7 @@ string timeToString();
 int main()
 {
 
-    HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>(199);
+    HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>(31);
 	BinarySearchTree<Racer>* racerTree = new BinarySearchTree<Racer>();
 	Stack<Racer>* actionList = new Stack < Racer > ;
 	Stack<char>* commandList = new Stack < char > ; 
