@@ -2,7 +2,7 @@
 // Created by Frank M. Carrano and Tim Henry.
 // Modified by: Tim Bly
 // Compiled withe Microsoft Visual Studio 2012 on Windows 8.1 64 bit
- 
+// Class for BinaryTree, used for alphabetized prints, and search by name
 #ifndef _BINARY_TREE
 #define _BINARY_TREE
 
@@ -23,7 +23,7 @@ public:
 	BinaryTree(const BinaryTree<ItemType> & tree){ rootPtr = copyTree(tree.rootPtr); }
 	virtual ~BinaryTree() { destroyTree(rootPtr); rootPtr=0; count = 0; }
 	BinaryTree & operator = (const BinaryTree & sourceTree);
-   
+
 	// common functions for all binary trees
  	bool isEmpty() const	{return (count == 0);}
 	int size() const	    {return count;}
@@ -46,11 +46,11 @@ public:
 	void iterativePostOrder(void visit(ItemType &)) const {_iterativepostorder(visit, rootPtr);}
 
 	// abstract functions to be implemented by derived class
-	virtual bool insert(const ItemType & newData) = 0; 
-	virtual bool remove(const ItemType & data) = 0; 
+	virtual bool insert(const ItemType & newData) = 0;
+	virtual bool remove(const ItemType & data) = 0;
 	virtual bool getEntry(const ItemType & anEntry, ItemType & returnedItem) const = 0;
 
-private:   
+private:
 
 	int getHeightHelper(BinaryNode<ItemType>* nodePtr) const;
 	// delete all nodes from the tree
@@ -66,12 +66,12 @@ private:
 	void _inorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr, ItemType & item) const;
 	void _postorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
 	void _breadthfirst(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
-   
+
 	//iterative traversals
 	void _iterativeinorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
 	void _iterativepreorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
 	void _iterativepostorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
-}; 
+};
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -88,7 +88,7 @@ int BinaryTree<ItemType>::getHeightHelper(BinaryNode<ItemType>* nodePtr) const
 
 
 template<class ItemType>
-BinaryNode<ItemType>* BinaryTree<ItemType>::copyTree(const BinaryNode<ItemType>* nodePtr) 
+BinaryNode<ItemType>* BinaryTree<ItemType>::copyTree(const BinaryNode<ItemType>* nodePtr) // function to copy content of a tree over
 {
 	BinaryNode<ItemType>* newNodePtr = nullptr;
 
@@ -97,12 +97,12 @@ BinaryNode<ItemType>* BinaryTree<ItemType>::copyTree(const BinaryNode<ItemType>*
 		newNodePtr = new BinaryNode<ItemType>(nodePtr->getItem(), nullptr, nullptr);
 		newNodePtr->setLeftPtr(copyTree(nodePtr->getLeftPtr()));
 		newNodePtr->setRightPtr(copyTree(nodePtr->getRightPtr()));
-	}    
+	}
     return newNodePtr;
-}  
+}
 
 template<class ItemType>
-void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr)
+void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr) // destroys the tree
 {
 	if(nodePtr)
 	{
@@ -111,7 +111,7 @@ void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr)
 		delete nodePtr;
 	}
 	return;
-}  
+}
 
 template<class ItemType>
 void BinaryTree<ItemType>::_preorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
@@ -122,8 +122,8 @@ void BinaryTree<ItemType>::_preorder(void visit(ItemType &), BinaryNode<ItemType
 		visit(item);
 		_preorder(visit, nodePtr->getLeftPtr());
 		_preorder(visit, nodePtr->getRightPtr());
-	} 
-}  
+	}
+}
 
 template<class ItemType>
 void BinaryTree<ItemType>::_preorder(void visit(ItemType &), void process(int &), BinaryNode<ItemType>* nodePtr, int indent) const
@@ -175,7 +175,7 @@ void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>
 		visit(item);
 		_inorder(visit, nodePtr->getRightPtr());
 	}
-}  
+}
 
 template<class ItemType>
 void BinaryTree<ItemType>::_inorder(void visit(ItemType &), BinaryNode<ItemType>* nodePtr, ItemType & item) const
@@ -231,7 +231,7 @@ void BinaryTree<ItemType>::_postorder(void visit(ItemType &), BinaryNode<ItemTyp
 		ItemType item = nodePtr->getItem();
 		visit(item);
 	}
-}  
+}
 
 
 
@@ -278,7 +278,7 @@ template<class ItemType>
 void BinaryTree<ItemType>::_breadthfirst(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const
 {
 	BinaryNode<ItemType> *traverse = nullptr;
-	
+
 	if(nodePtr == nullptr)
 		return;
 
@@ -308,8 +308,7 @@ BinaryTree<ItemType> & BinaryTree<ItemType>::operator=(const BinaryTree<ItemType
 		count = sourcetree->size();
 	}
 	return *this;
-}  
+}
 
 
 #endif
-

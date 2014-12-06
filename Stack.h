@@ -50,17 +50,17 @@ void Stack<T>::printStack()
 	curPtr = top;
 	cout << "\n----------STACK SIZE: " << getCount() << "----------\n";
 	cout << "PRINTING STACK FROM TOP --> BOTTOM\n";
-	
+
 	while(curPtr != NULL)
 	{
 		cout << curPtr->value << " ";
 		curPtr = curPtr->next;
 	}
-	
+
 	cout << endl;
 }
 
-//returns top item. 
+//returns top item.
 template <class T>
 T Stack<T>::getTop()
 {

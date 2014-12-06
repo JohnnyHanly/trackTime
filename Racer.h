@@ -1,7 +1,5 @@
 // Here is the header file we can use with
 // ADT BST and ADT Hashed Dictionary.
-// Now we just need to work on a main :)
-
 // Let us assume that in the input file,
 // the data will be in this order
 // name, idnumber, circuitname, date, finishtime (one line each)
@@ -21,30 +19,28 @@ private:
   string* circuitName;
   string* date;
   string* finishTime;
-  
-  
+
+
 public:
   Racer() { name = nullptr; idNum = nullptr; circuitName = nullptr;
     date = nullptr; finishTime = nullptr; }
   Racer(string *newName) { name = newName; idNum = nullptr; circuitName = nullptr;
     date = nullptr; finishTime = nullptr; }
-  //Racer(string *newId) { name = nullptr; idNum = newId; 
-  //  circuitName = nullptr; date = nullptr; finishTime = nullptr; }
-  Racer(string *newName, string *newId) { name = newName; idNum = newId; 
+  Racer(string *newName, string *newId) { name = newName; idNum = newId;
     circuitName = nullptr; date = nullptr; finishTime = nullptr; }
-  
+
   string* getFinishTime() const{ return finishTime; }
   string* getName() const{ return name; }
   string* getIdNum() const { return idNum; }
   string* getCircuitName() const { return circuitName; }
   string* getDate() const { return date;}
-  
+
   void setFinishTime(string *newTime) { finishTime = newTime; }
   void setName(string *nm) { name = nm; }
   void setIdNum(string *newId) { idNum = newId; }
   void setCircuitName(string *newCircuit) { circuitName = newCircuit; }
   void setDate(string *newDate) { date = newDate; }
-  
+
   bool operator > (const Racer &right)
   {
     bool status = false;
@@ -70,4 +66,3 @@ public:
   }
 };
 #endif RACER
-

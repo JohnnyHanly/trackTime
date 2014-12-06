@@ -1,3 +1,5 @@
+// class used to store elements within the hashDictionary
+// pointer to a linkedList is used, then the data, then gets pointed at by the linkedList
 #ifndef _HASHED_DICTIONARY_ELEMENT
 #define _HASHED_DICTIONARY_ELEMENT
 

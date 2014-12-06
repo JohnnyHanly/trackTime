@@ -1,3 +1,8 @@
+// Hash Dictionary Class used to store the hashed items for the dataStructure
+// Impliments a linked list for collision managment, and appeneds the object
+// to the end of the list if needed.
+// Used for SearchIDFunctions
+
 #ifndef _HASHED_DICTIONARY
 #define _HASHED_DICTIONARY
 
@@ -10,9 +15,9 @@ template<class KeyType, class ItemType>
 class HashedDictionary
 {
 private:
-	HashedDictionaryElement<KeyType, ItemType>* hashTable;
-	int itemCount;
-	int hashTableSize;
+	HashedDictionaryElement<KeyType, ItemType>* hashTable; // pointer to the hashTable
+	int itemCount; // items inside table
+	int hashTableSize; // size of hashTable
 	static const int DEFAULT_SIZE = 31;
 
 public:
@@ -47,12 +52,12 @@ template < class KeyType, class ItemType > bool HashedDictionary < KeyType, Item
 	//targetNode now points at node to be deleted
 	targetList->deleteNode(targetNode);
 	return true;
-}   
+}
 
 template<class KeyType, class ItemType>
 HashedDictionary<KeyType, ItemType>::HashedDictionary()
 {
-	itemCount = 0; 
+	itemCount = 0;
 	hashTableSize = DEFAULT_SIZE;
 	hashTable = new HashedDictionaryElement<KeyType, ItemType>[hashTableSize];
 }
@@ -139,7 +144,7 @@ int HashedDictionary<KeyType, ItemType>::getLongestIndex(int &biggestCount) cons
 }
 
 template<class KeyType, class ItemType>
-int HashedDictionary<KeyType, ItemType>::getHashIndex(const KeyType& key) const
+int HashedDictionary<KeyType, ItemType>::getHashIndex(const KeyType& key) const // hashing function
 {
 	int sum = key[0];
 	for (int i = 0; i < key.length(); i++)
@@ -148,9 +153,6 @@ int HashedDictionary<KeyType, ItemType>::getHashIndex(const KeyType& key) const
 	}
 	sum = sum % hashTableSize;
 	return sum;
-	//std::tr1::unordered_map<KeyType, ItemType> mapper;
-	//typename std::tr1::unordered_map<KeyType, ItemType>::hasher hashFunction = mapper.hash_function();
-	//return static_cast<int>(hashFunction(key) % hashTableSize);
 }
 
 
@@ -223,7 +225,7 @@ void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&)) const
 }
 
 template <class KeyType, class ItemType>
-void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&, 
+void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&,
 	BinarySearchTree<ItemType> *&), BinarySearchTree<ItemType> *&tree) const
 {
 	int i = 0;
@@ -237,7 +239,7 @@ void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&,
 }
 
 
-template <class KeyType, class ItemType>
+template <class KeyType, class ItemType> // used to traverse for indented prints,etc.
 void HashedDictionary<KeyType, ItemType>::specialTraverse(void visit(ItemType &), void specialVisit(ItemType &, int &), int &index) const
 {
 	int i = 0;

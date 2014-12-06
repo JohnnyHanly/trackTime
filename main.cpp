@@ -1,3 +1,6 @@
+// Main File for trackTime
+// By : Steven An, Amarjit Jandu, Tim Bly
+// CIS22c :  Group Project
 #include<iostream>
 #include<fstream>
 #include<iomanip>
@@ -18,7 +21,7 @@ const int MAX_CIRCUIT = 15;
 const int MAX_DATE = 10;
 const int MAX_FINISH = 7;
 
-bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
+bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 			  string inputFileName, int &numElem);
 bool isName(string str);
 bool isId(string str);
@@ -49,7 +52,7 @@ int main()
     HashedDictionary<string, Racer>* racerDictionary = new HashedDictionary<string, Racer>(31);
 	BinarySearchTree<Racer>* racerTree = new BinarySearchTree<Racer>();
 	Stack<Racer>* actionList = new Stack < Racer > ;
-	Stack<char>* commandList = new Stack < char > ; 
+	Stack<char>* commandList = new Stack < char > ;
 
 	//const string inputFile = "inputRacer.txt";
 	string inputFile = "";
@@ -80,11 +83,11 @@ int main()
 				break;
 			switchMenu(racerDictionary, racerTree, inputStr, stringArr, actionList, commandList, numElem);
 		}
-		
-	}
-	
 
-	
+	}
+
+
+
   return 0;
 }
 
@@ -139,7 +142,7 @@ void undo(Stack<Racer> *actionList, Stack<char> *commandList, HashedDictionary<s
 		cout << "RESTORED DRIVER -> ";
 		display(dict->getItem(ID)->getValue());
 		cout << endl;
-		
+
 	}
 
 }
@@ -180,13 +183,13 @@ void removeById(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		else
 		{
 			return;
-		}	
+		}
 	}
 	else
 	{
 		cout << "NO RACER FOUND WITH THAT ID.\n";
 	}
-	
+
 }
 
 void display(Racer &rc)
@@ -201,7 +204,7 @@ void display(Racer &rc)
 
 void displayToImport(Racer &rc)
 {
-	
+
 	string fileName ="output.txt"; // need to be able to create and ouput name
 		// based on the unique dictionary that exists.
 	ofstream file;
@@ -251,14 +254,14 @@ void addToTree(Racer &rc, BinarySearchTree<Racer> *&tree)
 
 // The readFile function has three reference parameters.
 // The function saves the filename of the file it opens to the
-// reference string parameter (in case saving file on exit needs to be 
-// implemented). The function creates a string array of the data 
+// reference string parameter (in case saving file on exit needs to be
+// implemented). The function creates a string array of the data
 // contained in the input text file and then sets the reference
 // string pointer variable to point to that array. The number of
 // elements saved to the string array is saved to the int reference
 // parameter. The function returns true if the file is read and false
 // if the file fails to open or the string array is empty.
-bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr, 
+bool readFileHash(HashedDictionary<string, Racer>* dict, string *&stringPtr,
 				  string inputFileName, int &numElem)
 {
 	ifstream inFile;
@@ -406,7 +409,9 @@ bool isTime(string str)
 
 void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree,
 			  string *stringArr, int &numElem, Stack<Racer>* actionList, Stack<char>* commandList)
-{
+{		// addRacer will attempt parse in data that the user inputs to add it to the program
+		// Input is very strict in what it allows in, to ensure that complications dont ariase.
+		// Function will check if driver ID is already being used, if so it does not add.
 	Racer *newRacer;
 	int i = numElem;
 	if(numElem+5 > MAX_ENTRIES)
@@ -574,7 +579,8 @@ void addRacer(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tr
 
 
 void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* tree, string inputStr, string* stringArr, Stack<Racer> *actionList, Stack<char> *commandList, int numElem)
-{
+{	// swith menu is used to handle the code input that the user has into the appliation
+	// and finds the corrisponding function that matches with the key input.
 	switch(inputStr[0])
 	{
 	case 'A': addRacer(dict, tree, stringArr, numElem, actionList, commandList);
@@ -601,14 +607,14 @@ void switchMenu(HashedDictionary<string, Racer>* dict, BinarySearchTree<Racer>* 
 		break;
 	case 'Z': undo(actionList, commandList, dict, tree);
 		break;
-	case 'U': 
+	case 'U':
 		{
 			ofstream ofs;
 			ofs.open("output.txt");
-			ofs.clear(); // ensures there is no garbage data introduced into output file to import. 
+			ofs.clear(); // ensures there is no garbage data introduced into output file to import.
 			ofs.close();
 			dict->traverse(displayToImport);
-			break; 
+			break;
 		}
 	default:
 		cout << "Usage: Enter M for available commands\n\n";
@@ -637,7 +643,8 @@ void displayMenu()
 
 
 void displayStats(HashedDictionary<string, Racer>* dict)
-{
+{ //function will output stats for the current hashDictionary
+	// does not return antyhing, required to be passed in a hashDictionary
 	int numCollisions = dict->getNumCollisions();
 	int numLists = dict->getNumLinkedLists();
 	int hashedArraySize = dict->getTableSize();
@@ -656,7 +663,7 @@ void displayStats(HashedDictionary<string, Racer>* dict)
 */
 
 	cout << "\n---------HASH TABLE STATISTICS---------\n\n";
-	
+
 	//smaller the barsize, the longer the graph. lol
 	int barSize = 5;
 	cout << "  HASH TABLE LOAD FACTOR       : ";
@@ -673,7 +680,7 @@ void displayStats(HashedDictionary<string, Racer>* dict)
 		cout << "-";
 	}
 	cout << "] " << load << '%' << endl;
-	
+
 	cout << "  EMPTY SPACES                 : " << emptyCount << "\n";
 	cout << "  HASH TABLE SIZE              : " << hashedArraySize << "\n";
 	cout << "  TOTAL NUMBER OF ITEMS        : " << numItems << "\n";
@@ -682,10 +689,10 @@ void displayStats(HashedDictionary<string, Racer>* dict)
 	cout << "  LARGEST LINKED LIST          : " << numItemsInLongest - 1 << "\n";
 	cout << "  INDEX OF LARGEST LINKED LIST : " << longestIndex << "\n";
 	cout << "  AVERAGE LINKED LISTS         : " << float(numItems) / float(hashedArraySize - emptyCount) << "\n\n";
-	
+
 }
 
-void searchByName(BinarySearchTree<Racer> *tree)
+void searchByName(BinarySearchTree<Racer> *tree) // function to search the tree for the name of a racer.
 {
 	Racer *searchRacer;
 	Racer foundRacer;
@@ -712,11 +719,11 @@ void searchByName(BinarySearchTree<Racer> *tree)
 }
 
 
-void searchById(HashedDictionary<string, Racer>* dict)
+void searchById(HashedDictionary<string, Racer>* dict) // function to search by the unique key, the ID
 {
 	ListNode<string, Racer>* nodePtr;
 	string searchString;
-	cout << "Please enter the ID number that you are searching for(8 char max).\n"; 
+	cout << "Please enter the ID number that you are searching for(8 char max).\n";
 	getline(cin, searchString);
 	if(searchString.length() > 8)
 	{

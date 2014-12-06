@@ -81,10 +81,10 @@ bool LinkedList<KeyType, T>::deleteNode(ListNode<KeyType, T>* deleteMe)
 		prev = cur;
 		cur = cur->getNext();
 	}
-	
+
 	prev->setNext(deleteMe->getNext());
 	--count;
-	
+
 	return true;
 }
 
@@ -130,7 +130,7 @@ void LinkedList<KeyType, T>::insertNode(KeyType newKey, T newValue)
 
     newNode = new ListNode<KeyType, T>(newKey, newValue); // Allocate a new node and store newValue there.
     nodePtr = head;                      // Position nodePtr at the head of list.
-	
+
 	newNode->setNext(nodePtr);
 	newNode = head;
 
@@ -186,7 +186,7 @@ void LinkedList<KeyType, T>::displayList(void visit(T &)) const
 }
 
 template <class KeyType, class T>
-void LinkedList<KeyType, T>::displayList(void visit(T &, 
+void LinkedList<KeyType, T>::displayList(void visit(T &,
 	BinarySearchTree<T> *&), BinarySearchTree<T> *&tree) const
 {
 	ListNode<KeyType, T> *nodePtr;
