@@ -1,0 +1,28 @@
+//sample data (3 entires)
+Steve McQueen
+D0000001
+Tsukuba Circuit
+01/04/2014
+60.21
+60.31
+60.25
+60.19
+60.49
+Akira Nakai
+D0000002
+Tsukuba Circuit
+01/04/2014
+59.20
+59.45
+60.35
+59.67
+59.12
+Ayrton Senna
+A0000001
+Tsukuba Circuit
+01/04/2014
+55.23
+55.45
+54.90
+54.87
+54.76
